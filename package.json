@@ -1,0 +1,17 @@
+{
+  "name": "hta-dms-app",
+  "version": "1.0.0",
+  "description": "HTA DMS Mobile App - Offline Order Booker",
+  "main": "index.js",
+  "scripts": {
+    "build:android": "npx cap sync android && cd android && ./gradlew assembleDebug"
+  },
+  "author": "Hussain Traders",
+  "license": "MIT",
+  "dependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/cli": "^6.0.0",
+    "@capacitor/core": "^6.0.0"
+  },
+  "devDependencies": {}
+}
