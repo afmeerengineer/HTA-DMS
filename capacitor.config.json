@@ -1,0 +1,13 @@
+{
+  "appId": "com.hussaintraders.dms",
+  "appName": "HTA DMS",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true
+  },
+  "android": {
+    "allowMixedContent": true
+  }
+}
