@@ -364,12 +364,25 @@ async function apiPost(endpoint, body){
   const formData = new URLSearchParams();
   formData.append('payload', JSON.stringify(body));
   const url = API.replace(/\/$/, '') + '/wp-admin/admin-ajax.php?action=hta_mobile_api&endpoint=' + endpoint + '&api_key=' + encodeURIComponent(KEY);
-  const r = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: formData.toString()
-  });
-  return r.json();
+
+  try {
+    const r = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: formData.toString()
+    });
+    const text = await r.text();
+    try {
+      return JSON.parse(text);
+    } catch(parseErr){
+      // Server ne HTML ya error page bheja hai
+      toast('Server error: ' + text.substring(0, 120), 'error', 6000);
+      return { success: false, data: { message: 'Non-JSON response' } };
+    }
+  } catch(e){
+    toast('Network error: ' + e.message, 'error', 6000);
+    return { success: false, data: { message: 'Network failed' } };
+  }
 }
 
 function updateNetBadge(){
