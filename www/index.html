@@ -24,7 +24,6 @@
   .bottom-nav i { font-size: 18px; }
   .bottom-nav .pending-dot { position: absolute; top: 4px; right: 25%; background: #dc3545; color: #fff; font-size: 9px; min-width: 16px; height: 16px; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 0 4px; font-weight: 700; }
   
-  /* Product Catalog & Filters */
   .filter-box { background: #fff; border-radius: 12px; padding: 10px; border: 1px solid #e2e8f0; margin-bottom: 10px; }
   .filter-box input, .filter-box select { font-size: 13px; padding: 6px 10px; border-radius: 8px; border: 1px solid #cbd5e1; }
   .product-list { max-height: 55vh; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
@@ -36,7 +35,6 @@
   .p-stock { font-weight: 700; }
   .p-rate { font-weight: 700; color: #0d6efd; font-size: 14px; text-align: right; white-space: nowrap; }
 
-  /* Active Entry Card */
   .entry-card { background: #fff; border: 2px solid #0d6efd; border-radius: 12px; padding: 12px; margin-bottom: 12px; box-shadow: 0 6px 18px rgba(13,110,253,.1); }
   .entry-card .head-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 8px; }
   .entry-card .p-title { font-weight: 700; font-size: 14px; color: #0f172a; line-height: 1.25; margin-top: 4px; }
@@ -52,15 +50,7 @@
   .checkout-bar { position: fixed; bottom: 74px; left: 0; right: 0; padding: 10px 12px; background: #fff; border-top: 1px solid #e2e8f0; z-index: 1020; padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
   #cartBtn { height: 52px; font-weight: 700; font-size: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; padding: 0 18px; box-shadow: 0 6px 18px rgba(25,135,84,.25); }
 
-  /* Cart Review Items */
-  .cart-item { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px; margin-bottom: 8px; }
-  .cart-item .c-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
-  .cart-item .c-name { font-weight: 700; font-size: 13px; color: #0f172a; }
-  .cart-item .c-row { display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 6px; }
-  .cart-item .c-field { background: #fff; border-radius: 6px; border: 1px solid #cbd5e1; padding: 4px; }
-  .cart-item .c-field label { font-size: 9px; font-weight: 700; color: #64748b; text-transform: uppercase; display: block; padding-left: 2px; }
-  .cart-item .c-field input { border: 0; width: 100%; font-weight: 700; font-size: 14px; background: transparent; outline: none; color: #0f172a; padding: 2px; }
-
+  .cart-item-readonly { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-bottom: 8px; }
   .order-row { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
   .order-row .meta { flex: 1; min-width: 0; }
   .order-row .cname { font-weight: 700; font-size: 13px; color: #0f172a; }
@@ -75,6 +65,7 @@
   .modal-footer { border-top: 1px solid #e2e8f0; padding: 12px 16px; }
   .form-label { font-weight: 700; font-size: 12px; color: #334155; margin-bottom: 4px; }
   .form-control, .form-select { border-radius: 8px; font-size: 14px; }
+  .is-invalid { border-color: #dc3545 !important; background-color: #fff8f8; }
   
   #toast { position: fixed; bottom: 150px; left: 50%; transform: translateX(-50%) translateY(20px); background: #0f172a; color: #fff; padding: 10px 18px; border-radius: 24px; font-size: 12px; font-weight: 600; z-index: 3000; opacity: 0; pointer-events: none; transition: all .3s; max-width: 80vw; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
   #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -98,7 +89,6 @@
   </div>
 </div>
 
-<!-- ================= TAB: BOOK ================= -->
 <section id="tab-book" class="p-2" style="padding-bottom: 160px !important;">
   <div class="cardx">
     <div class="row g-2">
@@ -116,10 +106,8 @@
     </button>
   </div>
 
-  <!-- Active Entry (Shows when SKU is selected) -->
   <div id="activeEntry" class="hidden"></div>
 
-  <!-- Product Catalog (Shows all SKUs with filters) -->
   <div id="catalogContainer">
     <div class="filter-box">
       <div class="row g-2 mb-2">
@@ -136,9 +124,7 @@
         </div>
       </div>
     </div>
-    <div id="productList" class="product-list">
-      <!-- Products will be rendered here -->
-    </div>
+    <div id="productList" class="product-list"></div>
   </div>
 
   <div class="checkout-bar">
@@ -149,7 +135,6 @@
   </div>
 </section>
 
-<!-- ================= TAB: HISTORY ================= -->
 <section id="tab-history" class="p-2 hidden" style="padding-bottom: 100px !important;">
   <div class="cardx">
     <h6><i class="fa-solid fa-filter text-primary"></i>Filters</h6>
@@ -162,7 +147,6 @@
   <div id="historyList"></div>
 </section>
 
-<!-- ================= TAB: PENDING ================= -->
 <section id="tab-pending" class="p-2 hidden" style="padding-bottom: 100px !important;">
   <div class="cardx">
     <h6><i class="fa-solid fa-cloud-arrow-up text-warning"></i>Pending Orders</h6>
@@ -172,7 +156,6 @@
   <div id="pendingList"></div>
 </section>
 
-<!-- ================= TAB: SETTINGS ================= -->
 <section id="tab-settings" class="p-2 hidden" style="padding-bottom: 100px !important;">
   <div class="cardx">
     <h6><i class="fa-solid fa-server text-primary"></i>Server Configuration</h6>
@@ -193,10 +176,9 @@
     <button class="btn btn-outline-primary btn-sm w-100 mb-2" id="btnRefreshData"><i class="fa-solid fa-cloud-arrow-down"></i> Refresh from Server</button>
     <button class="btn btn-outline-danger btn-sm w-100" id="btnClearCache"><i class="fa-solid fa-trash"></i> Clear All Cache</button>
   </div>
-  <div class="cardx text-center text-muted small"><div><strong>HTA DMS Mobile</strong> v1.2</div><div>Hussain Traders</div></div>
+  <div class="cardx text-center text-muted small"><div><strong>HTA DMS Mobile</strong> v1.3</div><div>Hussain Traders</div></div>
 </section>
 
-<!-- ================= MODAL: REVIEW CART ================= -->
 <div class="modal fade" id="reviewModal" tabindex="-1" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
@@ -204,13 +186,10 @@
         <h6 class="modal-title"><i class="fa-solid fa-cart-shopping text-primary me-2"></i>Cart Review</h6>
         <button class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body" id="reviewBody">
-        <!-- Cart items dynamically loaded here -->
-      </div>
+      <div class="modal-body" id="reviewBody"></div>
       <div class="modal-footer flex-column">
         <div class="d-flex justify-content-between fw-bold w-100 mb-2 fs-5">
-          <span>Net Total:</span>
-          <span class="text-success" id="summaryNet">Rs. 0</span>
+          <span>Net Total:</span><span class="text-success" id="summaryNet">Rs. 0</span>
         </div>
         <button class="btn btn-primary w-100 fw-bold" style="height:48px" id="btnSaveOrder"><i class="fa-solid fa-circle-check me-2"></i>Confirm & Save</button>
       </div>
@@ -218,7 +197,6 @@
   </div>
 </div>
 
-<!-- ================= MODAL: EDIT ORDER ================= -->
 <div class="modal fade" id="editModal" tabindex="-1" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
     <div class="modal-content">
@@ -240,7 +218,6 @@
   </div>
 </div>
 
-<!-- ================= MODAL: ADD CUSTOMER ================= -->
 <div class="modal fade" id="addCustModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -270,7 +247,6 @@
   </div>
 </div>
 
-<!-- ================= MODAL: SUCCESS ================= -->
 <div class="modal fade" id="successModal" tabindex="-1" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content text-center">
@@ -304,7 +280,7 @@
 <script>
 let API = '', KEY = '';
 let allRoutes = [], allCustomers = [], allProducts = [];
-let filteredProducts = []; // Holds currently visible products after filter
+let filteredProducts = [];
 let orderCart = {}, activeItem = null, currentChannel = '';
 let editCart = {}, editMeta = null;
 let isSyncing = false;
@@ -424,7 +400,8 @@ function loadCache(){
   populateRoutes();
   populateAddCustRouteDropdown();
   updateCacheCounters();
-  extractFiltersAndRender();
+  populateFilterDropdowns();
+  applyFilters();
 }
 async function refreshFromServer(){
   if (!API || !KEY) return;
@@ -438,7 +415,8 @@ async function refreshFromServer(){
       populateRoutes();
       populateAddCustRouteDropdown();
       updateCacheCounters();
-      extractFiltersAndRender();
+      populateFilterDropdowns();
+      applyFilters();
     }
   } catch(e){ console.warn('bootstrap failed', e); }
 }
@@ -469,9 +447,9 @@ function populateAddCustRouteDropdown(){
 }
 
 // ==========================================
-// FILTERS & PRODUCT CATALOG LOGIC
+// SMART FILTERS & PRODUCT CATALOG LOGIC
 // ==========================================
-function extractFiltersAndRender() {
+function populateFilterDropdowns() {
   const brandSel = document.getElementById('filterBrand');
   const catSel = document.getElementById('filterCategory');
   
@@ -483,8 +461,25 @@ function extractFiltersAndRender() {
 
   catSel.innerHTML = '<option value="">All Categories</option>';
   cats.forEach(c => catSel.innerHTML += `<option value="${esc(c)}">${esc(c)}</option>`);
+}
 
-  applyFilters();
+function updateDependentFilters(source) {
+  const brandSel = document.getElementById('filterBrand');
+  const catSel = document.getElementById('filterCategory');
+  const currentBrand = brandSel.value;
+  const currentCat = catSel.value;
+
+  if (source === 'brand') {
+    const availableCats = [...new Set(allProducts.filter(p => !currentBrand || p.brand === currentBrand).map(p => p.category).filter(Boolean))].sort();
+    catSel.innerHTML = '<option value="">All Categories</option>';
+    availableCats.forEach(c => catSel.innerHTML += `<option value="${esc(c)}" ${c === currentCat ? 'selected' : ''}>${esc(c)}</option>`);
+    if (currentCat && !availableCats.includes(currentCat)) catSel.value = '';
+  } else if (source === 'category') {
+    const availableBrands = [...new Set(allProducts.filter(p => !currentCat || p.category === currentCat).map(p => p.brand).filter(Boolean))].sort();
+    brandSel.innerHTML = '<option value="">All Brands</option>';
+    availableBrands.forEach(b => brandSel.innerHTML += `<option value="${esc(b)}" ${b === currentBrand ? 'selected' : ''}>${esc(b)}</option>`);
+    if (currentBrand && !availableBrands.includes(currentBrand)) brandSel.value = '';
+  }
 }
 
 function applyFilters() {
@@ -523,16 +518,13 @@ function renderProductList() {
 }
 
 function bindEvents(){
-  // Filters
   document.getElementById('searchInput').addEventListener('input', applyFilters);
-  document.getElementById('filterBrand').addEventListener('change', applyFilters);
-  document.getElementById('filterCategory').addEventListener('change', applyFilters);
+  document.getElementById('filterBrand').addEventListener('change', () => { updateDependentFilters('brand'); applyFilters(); });
+  document.getElementById('filterCategory').addEventListener('change', () => { updateDependentFilters('category'); applyFilters(); });
 
-  // Route & Customer
   document.getElementById('routeSelect').addEventListener('change', onRouteChange);
   document.getElementById('customerSelect').addEventListener('change', onCustomerChange);
 
-  // Modals & Buttons
   document.getElementById('cartBtn').addEventListener('click', openReview);
   document.getElementById('btnSaveOrder').addEventListener('click', saveOrder);
   document.getElementById('btnLoadHistory').addEventListener('click', loadHistory);
@@ -543,7 +535,6 @@ function bindEvents(){
   document.getElementById('btnUpdateOrder').addEventListener('click', updateOrder);
   document.getElementById('btnDeleteOrder').addEventListener('click', deleteOrder);
   
-  // Add Customer
   document.getElementById('btnAddCustomer').addEventListener('click', () => {
     document.getElementById('nc_code').value = '';
     document.getElementById('nc_name').value = '';
@@ -580,7 +571,7 @@ function onCustomerChange(e){
 }
 
 // ==========================================
-// PRODUCT ENTRY LOGIC
+// PRODUCT ENTRY & SMART SCHEME LIMIT LOGIC
 // ==========================================
 window.openProductEntry = function(sku){
   const p = allProducts.find(x => x.sku === sku);
@@ -596,6 +587,7 @@ window.openProductEntry = function(sku){
   document.getElementById('catalogContainer').classList.add('hidden');
   document.getElementById('activeEntry').classList.remove('hidden');
   renderActiveEntry();
+  document.getElementById('activeEntry').scrollIntoView({behavior:'smooth', block:'start'});
 };
 
 function closeActiveEntry() {
@@ -619,9 +611,10 @@ function renderActiveEntry(){
     const discPerCs = activeItem.scheme / (totalPcs / p.upc);
     initialNetRateCs = tpCs - discPerCs;
   }
-  const maxScheme = parseFloat(p.scheme_limit || 0);
-  const hasLimit = currentChannel !== 'Wholesale' && maxScheme > 0;
-  const limitTxt = hasLimit ? `Max Limit: ${money(maxScheme)}/PC` : '';
+  
+  const maxLimitPerPc = parseFloat(p.scheme_limit || 0);
+  const hasLimit = currentChannel !== 'Wholesale' && maxLimitPerPc > 0;
+  const totalLimitAmount = totalPcs * maxLimitPerPc;
 
   c.innerHTML = `
     <div class="entry-card">
@@ -666,7 +659,13 @@ function renderActiveEntry(){
           <input type="number" step="0.01" id="qScheme" class="form-control form-control-sm" value="${activeItem.scheme}" inputmode="decimal" oninput="calcNetFromScheme()" onfocus="this.select()">
         </div>
       </div>
-      ${hasLimit ? `<div class="mb-2"><span id="schemeLimitBadge" class="badge bg-warning text-dark" style="font-size:10px">${limitTxt}</span></div>` : ''}
+      
+      ${hasLimit ? `
+      <div class="mb-2">
+        <span id="schemeLimitBadge" class="badge bg-warning text-dark" style="font-size:11px;">
+          Total Max Limit: ${money(totalLimitAmount)} (${maxLimitPerPc}/PC)
+        </span>
+      </div>` : ''}
       <div id="schemeWarning" class="small text-danger mb-2" style="display:none"></div>
 
       <button class="btn btn-primary w-100 fw-bold" style="height:46px" onclick="commitItem()">
@@ -685,8 +684,19 @@ window.syncQty = function(){
   if (!activeItem) return;
   activeItem.cs = parseInt(document.getElementById('qCs').value) || 0;
   activeItem.pc = parseInt(document.getElementById('qPc').value) || 0;
+  
+  // Update Max Limit dynamically
+  const p = activeItem.product;
+  const totalPcs = (activeItem.cs * p.upc) + activeItem.pc;
+  const maxLimitPerPc = parseFloat(p.scheme_limit || 0);
+  const badge = document.getElementById('schemeLimitBadge');
+  if (badge && maxLimitPerPc > 0) {
+    badge.innerHTML = `Total Max Limit: ${money(totalPcs * maxLimitPerPc)} (${maxLimitPerPc}/PC)`;
+  }
+  
   calcSchemeFromNet();
 };
+
 window.calcSchemeFromNet = function(){
   if (!activeItem) return;
   const p = activeItem.product;
@@ -762,7 +772,7 @@ window.commitItem = function(){
 };
 
 // ==========================================
-// REVIEW CART LOGIC (INLINE EDITING)
+// CART REVIEW (READ-ONLY WITH EDIT BUTTON)
 // ==========================================
 function updateSummary(){
   let count = 0, net = 0;
@@ -796,29 +806,24 @@ function renderCartItems() {
     const amount = Math.max(0, pcs * it.product.rate - it.scheme);
     net += amount;
     return `
-    <div class="cart-item">
-      <div class="c-head">
+    <div class="cart-item-readonly">
+      <div class="d-flex justify-content-between align-items-start mb-1">
         <div>
-          <div class="c-name">${esc(it.product.name)}</div>
-          <div class="c-sku text-muted" style="font-size:10px;">SKU: ${esc(it.product.sku)}</div>
+          <div style="font-weight:700; font-size:13px; color:#0f172a;">${esc(it.product.name)}</div>
+          <div style="font-size:11px; color:#64748b;">SKU: ${esc(it.product.sku)}</div>
         </div>
         <div class="text-end">
-          <div class="fw-bold text-success" style="font-size:13px;">${money(amount)}</div>
-          <button class="btn btn-sm btn-outline-danger mt-1 py-0 px-2" onclick="deleteFromCart('${esc(it.product.sku)}')"><i class="fa-solid fa-trash" style="font-size:11px"></i></button>
+          <div class="fw-bold text-success" style="font-size:14px;">${money(amount)}</div>
         </div>
       </div>
-      <div class="c-row">
-        <div class="c-field">
-          <label>CS</label>
-          <input type="number" inputmode="numeric" value="${it.cs}" onchange="updateCart('${esc(it.product.sku)}','cs',this.value)" onfocus="this.select()">
+      <div class="d-flex justify-content-between align-items-center mt-2 p-2 bg-light rounded">
+        <div style="font-size:12px; color:#334155;">
+          Qty: <b>${it.cs} CS / ${it.pc} PC</b> <br>
+          Scheme: <b>${money(it.scheme)}</b>
         </div>
-        <div class="c-field">
-          <label>PC</label>
-          <input type="number" inputmode="numeric" value="${it.pc}" onchange="updateCart('${esc(it.product.sku)}','pc',this.value)" onfocus="this.select()">
-        </div>
-        <div class="c-field">
-          <label>Scheme</label>
-          <input type="number" step="0.01" inputmode="decimal" value="${it.scheme}" onchange="updateCart('${esc(it.product.sku)}','scheme',this.value)" onfocus="this.select()">
+        <div class="d-flex gap-1">
+          <button class="btn btn-sm btn-outline-primary py-1 px-2" onclick="editFromCart('${esc(it.product.sku)}')"><i class="fa-solid fa-pen" style="font-size:11px"></i> Edit</button>
+          <button class="btn btn-sm btn-outline-danger py-1 px-2" onclick="deleteFromCart('${esc(it.product.sku)}')"><i class="fa-solid fa-trash" style="font-size:11px"></i></button>
         </div>
       </div>
     </div>`;
@@ -829,19 +834,13 @@ function renderCartItems() {
 
 window.deleteFromCart = function(sku) {
   delete orderCart[sku];
-  renderCartItems(); // Instantly updates the UI without closing modal
+  renderCartItems();
   updateSummary();
 };
 
-window.updateCart = function(sku, field, val) {
-  if (!orderCart[sku]) return;
-  if (field === 'scheme') {
-    orderCart[sku].scheme = parseFloat(val) || 0;
-  } else {
-    orderCart[sku][field] = Math.max(0, parseInt(val) || 0);
-  }
-  renderCartItems(); // Recalculate totals and update UI
-  updateSummary();
+window.editFromCart = function(sku) {
+  bootstrap.Modal.getInstance(document.getElementById('reviewModal')).hide();
+  openProductEntry(sku); // This handles opening the entry form and scrolling
 };
 
 // ==========================================
@@ -905,6 +904,165 @@ async function saveOrder(){
 }
 
 // ==========================================
+// EDIT ORDER HISTORY (SMART SCHEME & NET RATE)
+// ==========================================
+window.openEdit = async function(orderId){
+  const body = document.getElementById('editBody');
+  body.innerHTML = '<div class="text-center py-4"><span class="loader"></span></div>';
+  document.getElementById('editOrderId').textContent = orderId;
+  editCart = {}; editMeta = null;
+  new bootstrap.Modal(document.getElementById('editModal')).show();
+  try {
+    const res = await apiGet('get_order', { order_id: orderId });
+    if (!res.success){ body.innerHTML = '<div class="alert alert-danger">Failed</div>'; return; }
+    editMeta = res.data;
+    res.data.items.forEach(it => { 
+      // Look up scheme limit from local cache
+      const pInfo = allProducts.find(p => p.sku === it.sku);
+      it.scheme_limit = pInfo ? parseFloat(pInfo.scheme_limit || 0) : 0;
+      editCart[it.sku] = { ...it }; 
+    });
+    renderEditBody();
+  } catch(e){ body.innerHTML = '<div class="alert alert-danger">Offline</div>'; }
+};
+
+function renderEditBody(){
+  const body = document.getElementById('editBody');
+  const items = Object.values(editCart);
+  if (!items.length){ body.innerHTML = '<div class="empty-state"><p>No items</p></div>'; updateEditTotal(); return; }
+  
+  body.innerHTML = items.map(it => {
+    const totalPcs = (it.cs * it.upc) + it.pc;
+    const gross = totalPcs * it.rate;
+    const net = Math.max(0, gross - it.scheme);
+    const netRateCs = totalPcs > 0 ? (net / (totalPcs / it.upc)) : 0;
+    const maxLimit = it.scheme_limit * totalPcs;
+    
+    return `
+      <div class="edit-item mb-3" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <div>
+            <div style="font-weight:700; font-size:14px; color:#0f172a;">${esc(it.name)}</div>
+            <div style="font-size:11px; color:#64748b;">SKU: ${esc(it.sku)} · Rate: ${money(it.rate)}/PC</div>
+          </div>
+          <button class="btn btn-sm btn-outline-danger py-0 px-2" onclick="removeEditItem('${esc(it.sku)}')"><i class="fa-solid fa-trash" style="font-size:11px"></i></button>
+        </div>
+        
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
+          <div style="background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:6px;">
+            <label style="font-size:10px; font-weight:700; color:#64748b; text-transform:uppercase;">CS</label>
+            <input type="number" style="border:0; width:100%; font-weight:700; font-size:14px;" value="${it.cs}" onchange="updEdit('${esc(it.sku)}','cs',this.value)">
+          </div>
+          <div style="background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:6px;">
+            <label style="font-size:10px; font-weight:700; color:#64748b; text-transform:uppercase;">PC</label>
+            <input type="number" style="border:0; width:100%; font-weight:700; font-size:14px;" value="${it.pc}" onchange="updEdit('${esc(it.sku)}','pc',this.value)">
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+          <div style="background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:6px;">
+            <label style="font-size:10px; font-weight:700; color:#64748b; text-transform:uppercase;">Net Rate / CS</label>
+            <input type="number" step="0.01" id="edit-net-${esc(it.sku)}" style="border:0; width:100%; font-weight:700; font-size:14px;" value="${netRateCs.toFixed(2)}" onchange="syncEditNetRate('${esc(it.sku)}', this.value)">
+          </div>
+          <div style="background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:6px;" id="edit-scheme-box-${esc(it.sku)}">
+            <label style="font-size:10px; font-weight:700; color:#64748b; text-transform:uppercase;">Scheme Disc</label>
+            <input type="number" step="0.01" id="edit-scheme-${esc(it.sku)}" style="border:0; width:100%; font-weight:700; font-size:14px;" value="${it.scheme}" onchange="syncEditScheme('${esc(it.sku)}', this.value)">
+          </div>
+        </div>
+        ${it.scheme_limit > 0 ? `<div class="mt-1 text-danger" id="edit-warn-${esc(it.sku)}" style="display:none; font-size:11px; font-weight:bold;">Max allowed: ${money(maxLimit)}</div>` : ''}
+      </div>`;
+  }).join('');
+  
+  updateEditTotal();
+}
+
+window.updEdit = function(sku, field, val){
+  if (!editCart[sku]) return;
+  editCart[sku][field] = Math.max(0, parseInt(val) || 0);
+  renderEditBody(); // Re-render to recalculate Net Rate and Limits
+};
+window.removeEditItem = function(sku){ if (!confirm('Remove?')) return; delete editCart[sku]; renderEditBody(); };
+
+window.syncEditNetRate = function(sku, val) {
+  const it = editCart[sku];
+  if (!it) return;
+  const totalPcs = (it.cs * it.upc) + it.pc;
+  const tpCs = it.rate * it.upc;
+  const netRateCs = parseFloat(val) || 0;
+  if (totalPcs > 0) {
+    const discPerCs = tpCs - netRateCs;
+    it.scheme = Math.max(0, (totalPcs / it.upc) * discPerCs);
+  }
+  renderEditBody();
+};
+
+window.syncEditScheme = function(sku, val) {
+  const it = editCart[sku];
+  if (!it) return;
+  it.scheme = parseFloat(val) || 0;
+  
+  // Validation
+  const totalPcs = (it.cs * it.upc) + it.pc;
+  const maxAllowed = totalPcs * (it.scheme_limit || 0);
+  const warn = document.getElementById(`edit-warn-${sku}`);
+  const schemeInput = document.getElementById(`edit-scheme-${sku}`);
+  
+  if (maxAllowed > 0 && it.scheme > maxAllowed + 0.01 && currentChannel !== 'Wholesale') {
+    if (schemeInput) schemeInput.classList.add('is-invalid');
+    if (warn) { warn.style.display = 'block'; warn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Limit exceeded! Max allowed: ${money(maxAllowed)}`; }
+  } else {
+    if (schemeInput) schemeInput.classList.remove('is-invalid');
+    if (warn) warn.style.display = 'none';
+  }
+  
+  renderEditBody(); // Re-render to update Net Rate
+};
+
+function updateEditTotal(){
+  let total = 0;
+  Object.values(editCart).forEach(it => { total += Math.max(0, ((it.cs * it.upc) + it.pc) * it.rate - it.scheme); });
+  document.getElementById('editTotal').textContent = money(total);
+}
+
+async function updateOrder(){
+  if (!editMeta) return;
+  const items = Object.values(editCart).filter(i => i.cs > 0 || i.pc > 0);
+  if (!items.length){ if (!confirm('No items. Delete order?')) return; return deleteOrder(); }
+  
+  // Final Limit check
+  for (let it of items) {
+    const totalPcs = (it.cs * it.upc) + it.pc;
+    const maxAllowed = totalPcs * (it.scheme_limit || 0);
+    if (maxAllowed > 0 && it.scheme > maxAllowed + 0.01 && currentChannel !== 'Wholesale') {
+      toast(`Scheme limit exceeded for ${it.name}`, 'error'); return;
+    }
+  }
+
+  const btn = document.getElementById('btnUpdateOrder');
+  btn.disabled = true; btn.innerHTML = '<span class="loader"></span>';
+  try {
+    const res = await apiPost('update_order', { order_id: editMeta.order_id, items: items.map(i => ({ sku: i.sku, name: i.name, cs: i.cs, pc: i.pc, upc: i.upc, rate: i.rate, scheme: i.scheme })) });
+    if (res && res.success){
+      bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
+      toast('Order updated ✓', 'success'); loadHistory();
+    } else toast(res.data?.message || 'Failed', 'error');
+  } catch(e){ toast('Network error', 'error'); }
+  btn.disabled = false; btn.innerHTML = 'Update Order';
+}
+
+async function deleteOrder(){
+  if (!editMeta) return;
+  if (!confirm('Delete order permanently?')) return;
+  try {
+    const res = await apiPost('delete_order', { order_id: editMeta.order_id });
+    if (res && res.success){
+      bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
+      toast('Deleted', 'success'); loadHistory();
+    } else toast('Delete failed', 'error');
+  } catch(e){ toast('Network error', 'error'); }
+}
+
+// ==========================================
 // CUSTOMER ADD LOGIC (FIXED FOR FORMDATA ISSUE)
 // ==========================================
 async function saveCustomer(){
@@ -923,7 +1081,6 @@ async function saveCustomer(){
   btn.innerHTML = '<span class="loader"></span>';
   
   try {
-    // Using URLSearchParams instead of FormData to bypass InfinityFree blocking
     const params = new URLSearchParams();
     params.append('action', 'hta_save_customer_ajax');
     params.append('code', code);
@@ -942,7 +1099,7 @@ async function saveCustomer(){
     if (res && res.success){
       toast('Customer saved ✓', 'success');
       bootstrap.Modal.getInstance(document.getElementById('addCustModal')).hide();
-      await refreshFromServer(); // Refresh data to get new customer
+      await refreshFromServer();
     } else {
       toast(res.data?.message || 'Failed', 'error');
     }
@@ -1036,82 +1193,6 @@ function renderHistory(rows, offline=false){
   el.innerHTML = html;
 }
 
-window.openEdit = async function(orderId){
-  const body = document.getElementById('editBody');
-  body.innerHTML = '<div class="text-center py-4"><span class="loader"></span></div>';
-  document.getElementById('editOrderId').textContent = orderId;
-  editCart = {}; editMeta = null;
-  new bootstrap.Modal(document.getElementById('editModal')).show();
-  try {
-    const res = await apiGet('get_order', { order_id: orderId });
-    if (!res.success){ body.innerHTML = '<div class="alert alert-danger">Failed</div>'; return; }
-    editMeta = res.data;
-    res.data.items.forEach(it => { editCart[it.sku] = { ...it }; });
-    renderEditBody();
-  } catch(e){ body.innerHTML = '<div class="alert alert-danger">Offline</div>'; }
-};
-
-function renderEditBody(){
-  const body = document.getElementById('editBody');
-  const items = Object.values(editCart);
-  if (!items.length){ body.innerHTML = '<div class="empty-state"><p>No items</p></div>'; updateEditTotal(); return; }
-  
-  body.innerHTML = items.map(it => `
-      <div class="edit-item" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:10px; margin-bottom:8px;">
-        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-          <div><div style="font-weight:700; font-size:13px;">${esc(it.name)}</div><div style="font-size:10px; color:#64748b;">SKU: ${esc(it.sku)} · Rate: ${money(it.rate)}</div></div>
-          <button class="btn btn-sm btn-outline-danger py-0 px-2" onclick="removeEditItem('${esc(it.sku)}')"><i class="fa-solid fa-trash" style="font-size:11px"></i></button>
-        </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr 1.5fr; gap:6px;">
-          <div style="background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:4px;"><label style="font-size:9px; font-weight:700; color:#64748b;">CS</label><input type="number" style="border:0; width:100%; font-weight:700;" value="${it.cs}" onchange="updEdit('${esc(it.sku)}','cs',this.value)"></div>
-          <div style="background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:4px;"><label style="font-size:9px; font-weight:700; color:#64748b;">PC</label><input type="number" style="border:0; width:100%; font-weight:700;" value="${it.pc}" onchange="updEdit('${esc(it.sku)}','pc',this.value)"></div>
-          <div style="background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:4px;"><label style="font-size:9px; font-weight:700; color:#64748b;">Scheme</label><input type="number" style="border:0; width:100%; font-weight:700;" value="${it.scheme}" onchange="updEdit('${esc(it.sku)}','scheme',this.value)"></div>
-        </div>
-      </div>`).join('');
-  updateEditTotal();
-}
-window.updEdit = function(sku, field, val){
-  if (!editCart[sku]) return;
-  if (field === 'scheme') editCart[sku].scheme = parseFloat(val) || 0;
-  else editCart[sku][field] = Math.max(0, parseInt(val) || 0);
-  updateEditTotal();
-};
-window.removeEditItem = function(sku){ if (!confirm('Remove?')) return; delete editCart[sku]; renderEditBody(); };
-function updateEditTotal(){
-  let total = 0;
-  Object.values(editCart).forEach(it => { total += Math.max(0, ((it.cs * it.upc) + it.pc) * it.rate - it.scheme); });
-  document.getElementById('editTotal').textContent = money(total);
-}
-
-async function updateOrder(){
-  if (!editMeta) return;
-  const items = Object.values(editCart).filter(i => i.cs > 0 || i.pc > 0);
-  if (!items.length){ if (!confirm('No items. Delete order?')) return; return deleteOrder(); }
-  
-  const btn = document.getElementById('btnUpdateOrder');
-  btn.disabled = true; btn.innerHTML = '<span class="loader"></span>';
-  try {
-    const res = await apiPost('update_order', { order_id: editMeta.order_id, items: items.map(i => ({ sku: i.sku, name: i.name, cs: i.cs, pc: i.pc, upc: i.upc, rate: i.rate, scheme: i.scheme })) });
-    if (res && res.success){
-      bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
-      toast('Order updated ✓', 'success'); loadHistory();
-    } else toast(res.data?.message || 'Failed', 'error');
-  } catch(e){ toast('Network error', 'error'); }
-  btn.disabled = false; btn.innerHTML = 'Update Order';
-}
-
-async function deleteOrder(){
-  if (!editMeta) return;
-  if (!confirm('Delete order permanently?')) return;
-  try {
-    const res = await apiPost('delete_order', { order_id: editMeta.order_id });
-    if (res && res.success){
-      bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
-      toast('Deleted', 'success'); loadHistory();
-    } else toast('Delete failed', 'error');
-  } catch(e){ toast('Network error', 'error'); }
-}
-
 async function saveSettings(){
   const url = document.getElementById('setUrl').value.trim().replace(/\/+$/,'');
   const key = document.getElementById('setKey').value.trim();
@@ -1136,7 +1217,7 @@ function clearCache(){
   if (!confirm('Clear all cached data?')) return;
   LS.del('hta_routes'); LS.del('hta_customers'); LS.del('hta_products'); LS.del('hta_history_cache');
   allRoutes = []; allCustomers = []; allProducts = [];
-  populateRoutes(); populateAddCustRouteDropdown(); updateCacheCounters();
+  populateRoutes(); populateAddCustRouteDropdown(); updateCacheCounters(); populateFilterDropdowns();
   toast('Cache cleared', 'success'); setTimeout(() => location.reload(), 600);
 }
 
