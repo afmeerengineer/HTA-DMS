@@ -23,16 +23,20 @@
   .bottom-nav button.active { color: #0d6efd; font-weight: 700; }
   .bottom-nav i { font-size: 18px; }
   .bottom-nav .pending-dot { position: absolute; top: 4px; right: 25%; background: #dc3545; color: #fff; font-size: 9px; min-width: 16px; height: 16px; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 0 4px; font-weight: 700; }
-  .search-container { position: relative; margin-bottom: 12px; }
-  .search-container input { padding-left: 36px; height: 44px; border-radius: 10px; border: 1px solid #cbd5e1; font-size: 14px; }
-  .search-container .s-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; pointer-events: none; }
-  .search-dropdown { position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: #fff; border: 1px solid #cbd5e1; border-radius: 10px; max-height: 55vh; overflow-y: auto; z-index: 1050; display: none; box-shadow: 0 8px 24px rgba(0,0,0,.12); }
-  .search-item { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-  .search-item:last-child { border-bottom: 0; }
-  .search-item:active { background: #e0f2fe; }
-  .search-item .pname { font-weight: 700; font-size: 13px; color: #0f172a; line-height: 1.2; }
-  .search-item .pmeta { font-size: 11px; color: #64748b; margin-top: 2px; }
-  .search-item .prate { background: #0d6efd; color: #fff; padding: 3px 8px; border-radius: 5px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+  
+  /* Product Catalog & Filters */
+  .filter-box { background: #fff; border-radius: 12px; padding: 10px; border: 1px solid #e2e8f0; margin-bottom: 10px; }
+  .filter-box input, .filter-box select { font-size: 13px; padding: 6px 10px; border-radius: 8px; border: 1px solid #cbd5e1; }
+  .product-list { max-height: 55vh; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+  .product-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+  .product-card:active { background: #f8fafc; }
+  .p-info { flex: 1; min-width: 0; }
+  .p-name { font-weight: 700; font-size: 13px; color: #0f172a; line-height: 1.2; }
+  .p-meta { font-size: 11px; color: #64748b; margin-top: 3px; }
+  .p-stock { font-weight: 700; }
+  .p-rate { font-weight: 700; color: #0d6efd; font-size: 14px; text-align: right; white-space: nowrap; }
+
+  /* Active Entry Card */
   .entry-card { background: #fff; border: 2px solid #0d6efd; border-radius: 12px; padding: 12px; margin-bottom: 12px; box-shadow: 0 6px 18px rgba(13,110,253,.1); }
   .entry-card .head-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 8px; }
   .entry-card .p-title { font-weight: 700; font-size: 14px; color: #0f172a; line-height: 1.25; margin-top: 4px; }
@@ -44,19 +48,26 @@
   .qty-btn { width: 34px; height: 34px; border: 1px solid #94a3b8; background: #fff; color: #0f172a; font-weight: 800; font-size: 18px; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 0; }
   .qty-btn:active { background: #0d6efd; color: #fff; border-color: #0d6efd; }
   .qty-field { width: 55px; height: 34px; text-align: center; border: 1px solid #94a3b8; border-radius: 8px; font-weight: 800; font-size: 15px; color: #0f172a; padding: 0; background: #fff; }
-  .qty-field:focus { outline: 2px solid #0d6efd; border-color: #0d6efd; }
-  .qty-field::-webkit-outer-spin-button, .qty-field::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-  .qty-field[type=number] { -moz-appearance: textfield; }
+  
   .checkout-bar { position: fixed; bottom: 74px; left: 0; right: 0; padding: 10px 12px; background: #fff; border-top: 1px solid #e2e8f0; z-index: 1020; padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
   #cartBtn { height: 52px; font-weight: 700; font-size: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; padding: 0 18px; box-shadow: 0 6px 18px rgba(25,135,84,.25); }
+
+  /* Cart Review Items */
+  .cart-item { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px; margin-bottom: 8px; }
+  .cart-item .c-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .cart-item .c-name { font-weight: 700; font-size: 13px; color: #0f172a; }
+  .cart-item .c-row { display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 6px; }
+  .cart-item .c-field { background: #fff; border-radius: 6px; border: 1px solid #cbd5e1; padding: 4px; }
+  .cart-item .c-field label { font-size: 9px; font-weight: 700; color: #64748b; text-transform: uppercase; display: block; padding-left: 2px; }
+  .cart-item .c-field input { border: 0; width: 100%; font-weight: 700; font-size: 14px; background: transparent; outline: none; color: #0f172a; padding: 2px; }
+
   .order-row { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-  .order-row:active { background: #f8fafc; }
   .order-row .meta { flex: 1; min-width: 0; }
-  .order-row .cname { font-weight: 700; font-size: 13px; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .order-row .cname { font-weight: 700; font-size: 13px; color: #0f172a; }
   .order-row .oinfo { font-size: 11px; color: #64748b; margin-top: 3px; }
   .order-row .oamount { font-weight: 700; color: #16a34a; font-size: 14px; text-align: right; }
   .order-row .odate { font-size: 10px; color: #94a3b8; margin-top: 2px; text-align: right; }
-  .order-row .chev { color: #94a3b8; margin-left: 4px; }
+
   .modal-content { border-radius: 16px; border: 0; }
   .modal-header { border-bottom: 1px solid #e2e8f0; padding: 14px 16px; }
   .modal-title { font-weight: 700; font-size: 16px; }
@@ -64,7 +75,7 @@
   .modal-footer { border-top: 1px solid #e2e8f0; padding: 12px 16px; }
   .form-label { font-weight: 700; font-size: 12px; color: #334155; margin-bottom: 4px; }
   .form-control, .form-select { border-radius: 8px; font-size: 14px; }
-  .form-control:focus, .form-select:focus { border-color: #0d6efd; box-shadow: 0 0 0 3px rgba(13,110,253,.12); }
+  
   #toast { position: fixed; bottom: 150px; left: 50%; transform: translateX(-50%) translateY(20px); background: #0f172a; color: #fff; padding: 10px 18px; border-radius: 24px; font-size: 12px; font-weight: 600; z-index: 3000; opacity: 0; pointer-events: none; transition: all .3s; max-width: 80vw; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
   #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   #toast.success { background: #16a34a; }
@@ -74,19 +85,7 @@
   .empty-state { text-align: center; padding: 40px 20px; color: #94a3b8; }
   .empty-state i { font-size: 42px; margin-bottom: 10px; opacity: .5; }
   .empty-state p { margin: 0; font-size: 13px; }
-  .sync-banner { background: #fef3c7; border: 1px solid #fcd34d; color: #92400e; padding: 8px 12px; border-radius: 8px; font-size: 12px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-  .edit-item { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px; margin-bottom: 8px; }
-  .edit-item .e-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; gap: 8px; }
-  .edit-item .e-name { font-weight: 700; font-size: 13px; color: #0f172a; }
-  .edit-item .e-sku { font-size: 10px; color: #64748b; margin-top: 2px; }
-  .edit-item .e-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
-  .edit-item .e-field { background: #fff; border-radius: 6px; }
-  .edit-item .e-field label { font-size: 9px; font-weight: 700; color: #64748b; text-transform: uppercase; padding: 4px 6px 0 6px; display: block; }
-  .edit-item .e-field input { border: 0; width: 100%; padding: 4px 6px 6px; font-weight: 700; font-size: 14px; background: transparent; outline: none; color: #0f172a; }
-  .text-mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-  .divider { height: 1px; background: #e2e8f0; margin: 12px 0; }
   .hidden { display: none !important; }
-  .scrollable { max-height: 60vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 </style>
 </head>
 <body>
@@ -99,6 +98,7 @@
   </div>
 </div>
 
+<!-- ================= TAB: BOOK ================= -->
 <section id="tab-book" class="p-2" style="padding-bottom: 160px !important;">
   <div class="cardx">
     <div class="row g-2">
@@ -116,13 +116,30 @@
     </button>
   </div>
 
-  <div class="search-container">
-    <i class="fa-solid fa-magnifying-glass s-icon"></i>
-    <input type="text" id="searchInput" class="form-control" placeholder="Search SKU code / product name..." autocomplete="off">
-    <div id="searchDropdown" class="search-dropdown"></div>
-  </div>
+  <!-- Active Entry (Shows when SKU is selected) -->
+  <div id="activeEntry" class="hidden"></div>
 
-  <div id="activeEntry"></div>
+  <!-- Product Catalog (Shows all SKUs with filters) -->
+  <div id="catalogContainer">
+    <div class="filter-box">
+      <div class="row g-2 mb-2">
+        <div class="col-12">
+          <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="Search SKU code / product name...">
+        </div>
+      </div>
+      <div class="row g-2">
+        <div class="col-6">
+          <select id="filterBrand" class="form-select form-select-sm"><option value="">All Brands</option></select>
+        </div>
+        <div class="col-6">
+          <select id="filterCategory" class="form-select form-select-sm"><option value="">All Categories</option></select>
+        </div>
+      </div>
+    </div>
+    <div id="productList" class="product-list">
+      <!-- Products will be rendered here -->
+    </div>
+  </div>
 
   <div class="checkout-bar">
     <button id="cartBtn" class="btn btn-success w-100" disabled>
@@ -132,6 +149,7 @@
   </div>
 </section>
 
+<!-- ================= TAB: HISTORY ================= -->
 <section id="tab-history" class="p-2 hidden" style="padding-bottom: 100px !important;">
   <div class="cardx">
     <h6><i class="fa-solid fa-filter text-primary"></i>Filters</h6>
@@ -144,6 +162,7 @@
   <div id="historyList"></div>
 </section>
 
+<!-- ================= TAB: PENDING ================= -->
 <section id="tab-pending" class="p-2 hidden" style="padding-bottom: 100px !important;">
   <div class="cardx">
     <h6><i class="fa-solid fa-cloud-arrow-up text-warning"></i>Pending Orders</h6>
@@ -153,6 +172,7 @@
   <div id="pendingList"></div>
 </section>
 
+<!-- ================= TAB: SETTINGS ================= -->
 <section id="tab-settings" class="p-2 hidden" style="padding-bottom: 100px !important;">
   <div class="cardx">
     <h6><i class="fa-solid fa-server text-primary"></i>Server Configuration</h6>
@@ -173,9 +193,10 @@
     <button class="btn btn-outline-primary btn-sm w-100 mb-2" id="btnRefreshData"><i class="fa-solid fa-cloud-arrow-down"></i> Refresh from Server</button>
     <button class="btn btn-outline-danger btn-sm w-100" id="btnClearCache"><i class="fa-solid fa-trash"></i> Clear All Cache</button>
   </div>
-  <div class="cardx text-center text-muted small"><div><strong>HTA DMS Mobile</strong> v1.1</div><div>Hussain Traders</div></div>
+  <div class="cardx text-center text-muted small"><div><strong>HTA DMS Mobile</strong> v1.2</div><div>Hussain Traders</div></div>
 </section>
 
+<!-- ================= MODAL: REVIEW CART ================= -->
 <div class="modal fade" id="reviewModal" tabindex="-1" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
@@ -183,7 +204,9 @@
         <h6 class="modal-title"><i class="fa-solid fa-cart-shopping text-primary me-2"></i>Cart Review</h6>
         <button class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body" id="reviewBody"></div>
+      <div class="modal-body" id="reviewBody">
+        <!-- Cart items dynamically loaded here -->
+      </div>
       <div class="modal-footer flex-column">
         <div class="d-flex justify-content-between fw-bold w-100 mb-2 fs-5">
           <span>Net Total:</span>
@@ -195,6 +218,7 @@
   </div>
 </div>
 
+<!-- ================= MODAL: EDIT ORDER ================= -->
 <div class="modal fade" id="editModal" tabindex="-1" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
     <div class="modal-content">
@@ -216,6 +240,7 @@
   </div>
 </div>
 
+<!-- ================= MODAL: ADD CUSTOMER ================= -->
 <div class="modal fade" id="addCustModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -234,10 +259,7 @@
         <input type="tel" id="nc_phone" class="form-control form-control-sm mb-2">
         <label class="form-label">Channel</label>
         <select id="nc_channel" class="form-select form-select-sm">
-          <option>General Store</option>
-          <option>Super Market</option>
-          <option>Wholesale</option>
-          <option>Karyana</option>
+          <option>General Store</option><option>Super Market</option><option>Wholesale</option><option>Karyana</option>
         </select>
       </div>
       <div class="modal-footer">
@@ -248,6 +270,7 @@
   </div>
 </div>
 
+<!-- ================= MODAL: SUCCESS ================= -->
 <div class="modal fade" id="successModal" tabindex="-1" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content text-center">
@@ -281,6 +304,7 @@
 <script>
 let API = '', KEY = '';
 let allRoutes = [], allCustomers = [], allProducts = [];
+let filteredProducts = []; // Holds currently visible products after filter
 let orderCart = {}, activeItem = null, currentChannel = '';
 let editCart = {}, editMeta = null;
 let isSyncing = false;
@@ -364,35 +388,20 @@ async function apiPost(endpoint, body){
   const formData = new URLSearchParams();
   formData.append('payload', JSON.stringify(body));
   const url = API.replace(/\/$/, '') + '/wp-admin/admin-ajax.php?action=hta_mobile_api&endpoint=' + endpoint + '&api_key=' + encodeURIComponent(KEY);
-
-  try {
-    const r = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: formData.toString()
-    });
-    const text = await r.text();
-    try {
-      return JSON.parse(text);
-    } catch(parseErr){
-      // Server ne HTML ya error page bheja hai
-      toast('Server error: ' + text.substring(0, 120), 'error', 6000);
-      return { success: false, data: { message: 'Non-JSON response' } };
-    }
-  } catch(e){
-    toast('Network error: ' + e.message, 'error', 6000);
-    return { success: false, data: { message: 'Network failed' } };
-  }
+  const r = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: formData.toString()
+  });
+  return r.json();
 }
 
 function updateNetBadge(){
   const b = document.getElementById('netBadge');
   if (navigator.onLine){
-    b.className = 'badge bg-success';
-    b.innerHTML = '<span class="sync-dot" style="background:#fff"></span>Online';
+    b.className = 'badge bg-success'; b.innerHTML = '<span class="sync-dot" style="background:#fff"></span>Online';
   } else {
-    b.className = 'badge bg-danger';
-    b.innerHTML = '<i class="fa-solid fa-plane"></i> Offline';
+    b.className = 'badge bg-danger'; b.innerHTML = '<i class="fa-solid fa-plane"></i> Offline';
   }
 }
 function updatePendingUI(){
@@ -401,12 +410,10 @@ function updatePendingUI(){
   const badge = document.getElementById('syncBadge');
   const dot = document.getElementById('pendingDot');
   if (n > 0){
-    badge.classList.remove('hidden');
-    document.getElementById('syncCount').textContent = n;
+    badge.classList.remove('hidden'); document.getElementById('syncCount').textContent = n;
     if (dot){ dot.classList.remove('hidden'); dot.textContent = n; }
   } else {
-    badge.classList.add('hidden');
-    if (dot) dot.classList.add('hidden');
+    badge.classList.add('hidden'); if (dot) dot.classList.add('hidden');
   }
 }
 
@@ -417,6 +424,7 @@ function loadCache(){
   populateRoutes();
   populateAddCustRouteDropdown();
   updateCacheCounters();
+  extractFiltersAndRender();
 }
 async function refreshFromServer(){
   if (!API || !KEY) return;
@@ -426,12 +434,11 @@ async function refreshFromServer(){
       allRoutes    = res.data.routes || [];
       allCustomers = res.data.customers || [];
       allProducts  = res.data.products || [];
-      LS.set('hta_routes', allRoutes);
-      LS.set('hta_customers', allCustomers);
-      LS.set('hta_products', allProducts);
+      LS.set('hta_routes', allRoutes); LS.set('hta_customers', allCustomers); LS.set('hta_products', allProducts);
       populateRoutes();
       populateAddCustRouteDropdown();
       updateCacheCounters();
+      extractFiltersAndRender();
     }
   } catch(e){ console.warn('bootstrap failed', e); }
 }
@@ -446,7 +453,7 @@ function populateRoutes(){
   const seen = new Set();
   allRoutes.forEach(r => {
     if (seen.has(r.route_name)) return; seen.add(r.route_name);
-    sel.innerHTML += `<option value="${esc(r.route_name)}" data-code="${esc(r.route_code)}">${esc(r.route_name)}</option>`;
+    sel.innerHTML += `<option value="${esc(r.route_name)}">${esc(r.route_name)}</option>`;
   });
   allCustomers.forEach(c => {
     if (seen.has(c.route)) return; seen.add(c.route);
@@ -461,10 +468,71 @@ function populateAddCustRouteDropdown(){
   });
 }
 
+// ==========================================
+// FILTERS & PRODUCT CATALOG LOGIC
+// ==========================================
+function extractFiltersAndRender() {
+  const brandSel = document.getElementById('filterBrand');
+  const catSel = document.getElementById('filterCategory');
+  
+  const brands = [...new Set(allProducts.map(p => p.brand).filter(Boolean))].sort();
+  const cats = [...new Set(allProducts.map(p => p.category).filter(Boolean))].sort();
+
+  brandSel.innerHTML = '<option value="">All Brands</option>';
+  brands.forEach(b => brandSel.innerHTML += `<option value="${esc(b)}">${esc(b)}</option>`);
+
+  catSel.innerHTML = '<option value="">All Categories</option>';
+  cats.forEach(c => catSel.innerHTML += `<option value="${esc(c)}">${esc(c)}</option>`);
+
+  applyFilters();
+}
+
+function applyFilters() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const b = document.getElementById('filterBrand').value;
+  const c = document.getElementById('filterCategory').value;
+
+  filteredProducts = allProducts.filter(p => {
+    if (b && p.brand !== b) return false;
+    if (c && p.category !== c) return false;
+    if (q && !(p.name||'').toLowerCase().includes(q) && !(p.sku||'').toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  renderProductList();
+}
+
+function renderProductList() {
+  const el = document.getElementById('productList');
+  if (filteredProducts.length === 0) {
+    el.innerHTML = '<div class="text-center text-muted py-4">No products found</div>';
+    return;
+  }
+  
+  el.innerHTML = filteredProducts.map(p => {
+    const stockCls = (p.stock_pcs||0) <= 0 ? 'text-danger' : 'text-success';
+    return `
+    <div class="product-card" onclick="openProductEntry('${esc(p.sku)}')">
+      <div class="p-info">
+        <div class="p-name">${esc(p.name)}</div>
+        <div class="p-meta">SKU: ${esc(p.sku)} | Stock: <span class="p-stock ${stockCls}">${esc(p.stock_str || '0')}</span></div>
+      </div>
+      <div class="p-rate">${moneyShort(p.rate)}</div>
+    </div>`;
+  }).join('');
+}
+
 function bindEvents(){
+  // Filters
+  document.getElementById('searchInput').addEventListener('input', applyFilters);
+  document.getElementById('filterBrand').addEventListener('change', applyFilters);
+  document.getElementById('filterCategory').addEventListener('change', applyFilters);
+
+  // Route & Customer
   document.getElementById('routeSelect').addEventListener('change', onRouteChange);
   document.getElementById('customerSelect').addEventListener('change', onCustomerChange);
-  document.getElementById('searchInput').addEventListener('input', onSearch);
+
+  // Modals & Buttons
   document.getElementById('cartBtn').addEventListener('click', openReview);
   document.getElementById('btnSaveOrder').addEventListener('click', saveOrder);
   document.getElementById('btnLoadHistory').addEventListener('click', loadHistory);
@@ -474,6 +542,8 @@ function bindEvents(){
   document.getElementById('btnRefreshData').addEventListener('click', async () => { toast('Refreshing...', '', 1000); await refreshFromServer(); toast('Data refreshed ✓', 'success'); });
   document.getElementById('btnUpdateOrder').addEventListener('click', updateOrder);
   document.getElementById('btnDeleteOrder').addEventListener('click', deleteOrder);
+  
+  // Add Customer
   document.getElementById('btnAddCustomer').addEventListener('click', () => {
     document.getElementById('nc_code').value = '';
     document.getElementById('nc_name').value = '';
@@ -491,12 +561,6 @@ function bindEvents(){
     } catch(e){ document.getElementById('nc_code').value = 'HTAC-ERR-' + Date.now(); }
   });
   document.getElementById('btnSaveCustomer').addEventListener('click', saveCustomer);
-
-  document.addEventListener('click', (e) => {
-    const dd = document.getElementById('searchDropdown');
-    const inp = document.getElementById('searchInput');
-    if (!dd.contains(e.target) && e.target !== inp) dd.style.display = 'none';
-  });
 }
 
 function onRouteChange(e){
@@ -515,33 +579,10 @@ function onCustomerChange(e){
   currentChannel = opt ? opt.dataset.channel : '';
 }
 
-function onSearch(){
-  const q = this.value.toLowerCase().trim();
-  const dd = document.getElementById('searchDropdown');
-  if (!q){ dd.style.display = 'none'; return; }
-  const matches = allProducts.filter(p =>
-    (p.name||'').toLowerCase().includes(q) || (p.sku||'').toLowerCase().includes(q)
-  ).slice(0, 50);
-  if (!matches.length){
-    dd.innerHTML = '<div class="p-3 text-center text-muted small">No product found</div>';
-    dd.style.display = 'block';
-    return;
-  }
-  dd.innerHTML = matches.map(p => {
-    const stockCls = (p.stock_pcs||0) <= 0 ? 'text-danger fw-bold' : 'text-success fw-bold';
-    const stockTxt = p.stock_str || '0 CS / 0 PC';
-    return `<div class="search-item" onclick="selectProduct('${esc(p.sku)}')">
-      <div>
-        <div class="pname">${esc(p.name)}</div>
-        <div class="pmeta">SKU: ${esc(p.sku)} · Stock: <span class="${stockCls}">${esc(stockTxt)}</span></div>
-      </div>
-      <div class="prate">${moneyShort(p.rate)}</div>
-    </div>`;
-  }).join('');
-  dd.style.display = 'block';
-}
-
-window.selectProduct = function(sku){
+// ==========================================
+// PRODUCT ENTRY LOGIC
+// ==========================================
+window.openProductEntry = function(sku){
   const p = allProducts.find(x => x.sku === sku);
   if (!p) return;
   const existing = orderCart[sku];
@@ -551,18 +592,23 @@ window.selectProduct = function(sku){
     pc: existing ? existing.pc : 0,
     scheme: existing ? existing.scheme : 0
   };
-  document.getElementById('searchInput').value = '';
-  document.getElementById('searchDropdown').style.display = 'none';
-  document.getElementById('searchInput').blur();
-  renderActive();
+  
+  document.getElementById('catalogContainer').classList.add('hidden');
+  document.getElementById('activeEntry').classList.remove('hidden');
+  renderActiveEntry();
 };
 
-function renderActive(){
+function closeActiveEntry() {
+  activeItem = null;
+  document.getElementById('activeEntry').classList.add('hidden');
+  document.getElementById('activeEntry').innerHTML = '';
+  document.getElementById('catalogContainer').classList.remove('hidden');
+}
+
+function renderActiveEntry(){
   const c = document.getElementById('activeEntry');
-  if (!activeItem){
-    c.innerHTML = `<div class="empty-state"><i class="fa-solid fa-cart-arrow-down"></i><p>Uper Search bar se SKU select karein, Qty & Scheme daal kar Cart mein add karein.</p></div>`;
-    return;
-  }
+  if (!activeItem){ closeActiveEntry(); return; }
+  
   const p = activeItem.product;
   const stockCls = (p.stock_pcs||0) <= 0 ? 'bg-danger' : 'bg-success';
   const stockTxt = p.stock_str || '0 CS / 0 PC';
@@ -588,7 +634,7 @@ function renderActive(){
           <div class="p-title">${esc(p.name)}</div>
           <div class="p-tp">TP: ${money(p.rate)}/PC (${money(tpCs)}/CS)</div>
         </div>
-        <button class="btn-close" onclick="cancelActive()"></button>
+        <button class="btn-close" onclick="closeActiveEntry()"></button>
       </div>
 
       <div class="qty-row">
@@ -624,13 +670,12 @@ function renderActive(){
       <div id="schemeWarning" class="small text-danger mb-2" style="display:none"></div>
 
       <button class="btn btn-primary w-100 fw-bold" style="height:46px" onclick="commitItem()">
-        <i class="fa-solid fa-cart-plus me-2"></i>Add to Cart
+        <i class="fa-solid fa-cart-plus me-2"></i>Add / Update Cart
       </button>
     </div>`;
   validateScheme();
 }
 
-window.cancelActive = function(){ activeItem = null; renderActive(); };
 window.chgQty = function(type, delta){
   const el = document.getElementById(type === 'cs' ? 'qCs' : 'qPc');
   el.value = Math.max(0, (parseInt(el.value)||0) + delta);
@@ -659,8 +704,7 @@ window.calcSchemeFromNet = function(){
     schEl.value = Math.max(0, totalScheme).toFixed(2);
     activeItem.scheme = parseFloat(schEl.value) || 0;
   } else if (netEl.value === ''){
-    schEl.value = '0';
-    activeItem.scheme = 0;
+    schEl.value = '0'; activeItem.scheme = 0;
   }
   validateScheme();
 };
@@ -712,12 +756,14 @@ window.commitItem = function(){
     if (activeItem.scheme > maxAllowed + 0.01){ toast('Scheme limit exceeded!', 'error'); return; }
   }
   orderCart[p.sku] = { ...activeItem };
-  activeItem = null;
-  renderActive();
+  closeActiveEntry();
   updateSummary();
   toast('Added to cart ✓', 'success', 1200);
 };
 
+// ==========================================
+// REVIEW CART LOGIC (INLINE EDITING)
+// ==========================================
 function updateSummary(){
   let count = 0, net = 0;
   Object.values(orderCart).forEach(it => {
@@ -730,64 +776,93 @@ function updateSummary(){
 }
 
 function openReview(){
-  const items = Object.values(orderCart);
-  if (!items.length) return;
-  let net = 0;
+  renderCartItems();
+  new bootstrap.Modal(document.getElementById('reviewModal')).show();
+}
+
+function renderCartItems() {
+  const items = Object.values(orderCart).filter(i => i.cs > 0 || i.pc > 0);
   const body = document.getElementById('reviewBody');
+  
+  if (items.length === 0) {
+    body.innerHTML = '<div class="text-center text-muted py-4">Cart khali hai</div>';
+    document.getElementById('summaryNet').textContent = 'Rs. 0';
+    return;
+  }
+
+  let net = 0;
   body.innerHTML = items.map(it => {
     const pcs = (it.cs * it.product.upc) + it.pc;
     const amount = Math.max(0, pcs * it.product.rate - it.scheme);
     net += amount;
-    return `<div class="order-row">
-      <div class="meta">
-        <div class="cname">${esc(it.product.name)}</div>
-        <div class="oinfo">${it.cs} CS / ${it.pc} PC · Disc: ${money(it.scheme)}</div>
+    return `
+    <div class="cart-item">
+      <div class="c-head">
+        <div>
+          <div class="c-name">${esc(it.product.name)}</div>
+          <div class="c-sku text-muted" style="font-size:10px;">SKU: ${esc(it.product.sku)}</div>
+        </div>
+        <div class="text-end">
+          <div class="fw-bold text-success" style="font-size:13px;">${money(amount)}</div>
+          <button class="btn btn-sm btn-outline-danger mt-1 py-0 px-2" onclick="deleteFromCart('${esc(it.product.sku)}')"><i class="fa-solid fa-trash" style="font-size:11px"></i></button>
+        </div>
       </div>
-      <div style="text-align:right">
-        <div class="oamount">${money(amount)}</div>
-        <div class="d-flex gap-1 justify-content-end mt-1">
-          <button class="btn btn-sm btn-outline-primary py-0 px-2" onclick="editCart('${esc(it.product.sku)}')" title="Edit"><i class="fa-solid fa-pen" style="font-size:11px"></i></button>
-          <button class="btn btn-sm btn-outline-danger py-0 px-2" onclick="removeCart('${esc(it.product.sku)}')" title="Remove"><i class="fa-solid fa-trash" style="font-size:11px"></i></button>
+      <div class="c-row">
+        <div class="c-field">
+          <label>CS</label>
+          <input type="number" inputmode="numeric" value="${it.cs}" onchange="updateCart('${esc(it.product.sku)}','cs',this.value)" onfocus="this.select()">
+        </div>
+        <div class="c-field">
+          <label>PC</label>
+          <input type="number" inputmode="numeric" value="${it.pc}" onchange="updateCart('${esc(it.product.sku)}','pc',this.value)" onfocus="this.select()">
+        </div>
+        <div class="c-field">
+          <label>Scheme</label>
+          <input type="number" step="0.01" inputmode="decimal" value="${it.scheme}" onchange="updateCart('${esc(it.product.sku)}','scheme',this.value)" onfocus="this.select()">
         </div>
       </div>
     </div>`;
   }).join('');
+  
   document.getElementById('summaryNet').textContent = money(net);
-  new bootstrap.Modal(document.getElementById('reviewModal')).show();
 }
-window.removeCart = function(sku){
+
+window.deleteFromCart = function(sku) {
   delete orderCart[sku];
-  openReview();
+  renderCartItems(); // Instantly updates the UI without closing modal
   updateSummary();
-  const modal = bootstrap.Modal.getInstance(document.getElementById('reviewModal'));
-  if (modal && Object.keys(orderCart).length === 0) modal.hide();
-};
-window.editCart = function(sku){
-  const inst = bootstrap.Modal.getInstance(document.getElementById('reviewModal'));
-  if (inst) inst.hide();
-  selectProduct(sku);
-  setTimeout(() => {
-    const el = document.getElementById('activeEntry');
-    if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
-  }, 250);
 };
 
+window.updateCart = function(sku, field, val) {
+  if (!orderCart[sku]) return;
+  if (field === 'scheme') {
+    orderCart[sku].scheme = parseFloat(val) || 0;
+  } else {
+    orderCart[sku][field] = Math.max(0, parseInt(val) || 0);
+  }
+  renderCartItems(); // Recalculate totals and update UI
+  updateSummary();
+};
+
+// ==========================================
+// SAVE ORDER & SYNC
+// ==========================================
 async function saveOrder(){
   const route = document.getElementById('routeSelect').value;
   const custSel = document.getElementById('customerSelect');
   const custCode = custSel.value;
   const custName = custSel.options[custSel.selectedIndex]?.dataset.name || '';
+  
   if (!route || !custCode){ toast('Route & Customer select karein', 'error'); return; }
   const items = Object.values(orderCart).filter(i => i.cs > 0 || i.pc > 0);
-  if (!items.length){ toast('Cart khali', 'error'); return; }
+  if (!items.length){ toast('Cart khali hai', 'error'); return; }
 
   const orderId = genOrderId();
   const payload = {
     order_id: orderId,
     route, customer: custName, customer_code: custCode,
     items: items.map(i => ({ sku: i.product.sku, name: i.product.name, cs: i.cs, pc: i.pc, upc: i.product.upc, rate: i.product.rate, scheme: i.scheme })),
-    client_uuid: orderId,
-    created_at: Date.now()
+    client_uuid: orderId, created_at: Date.now()
   };
   lastSavedPayload = payload;
 
@@ -802,6 +877,7 @@ async function saveOrder(){
       if (res && res.success) synced = true;
     } catch(e){ synced = false; }
   }
+  
   if (!synced){
     const pending = LS.get('hta_pending_orders', []);
     pending.push(payload);
@@ -823,47 +899,64 @@ async function saveOrder(){
   }
 
   orderCart = {};
-  activeItem = null;
-  renderActive();
   updateSummary();
-
   bootstrap.Modal.getInstance(document.getElementById('reviewModal'))?.hide();
   new bootstrap.Modal(document.getElementById('successModal')).show();
 }
 
-// ============ CSV EXPORT ============
-function buildCSVBlob(payload){
-  let rows = [];
-  rows.push(['Order ID','Route','Customer Code','Customer','SKU','Name','CS','PC','Rate','Scheme','Net']);
-  payload.items.forEach(it => {
-    const pcs = (it.cs * it.upc) + it.pc;
-    const net = Math.max(0, (pcs * it.rate) - it.scheme);
-    rows.push([payload.order_id, payload.route, payload.customer_code, payload.customer, it.sku, it.name, it.cs, it.pc, it.rate, it.scheme, net.toFixed(2)]);
-  });
-  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
-  return { blob: new Blob([csv], {type:'text/csv;charset=utf-8;'}), filename: `${payload.customer_code}_${payload.order_id}.csv` };
-}
-window.triggerCSVShare = function(){
-  if (!lastSavedPayload) return;
-  const { blob, filename } = buildCSVBlob(lastSavedPayload);
-  const file = new File([blob], filename, { type: 'text/csv' });
-  if (navigator.canShare && navigator.canShare({ files: [file] })){
-    navigator.share({ files: [file], title: `Order ${lastSavedPayload.customer}`, text: 'HTA DMS Order' }).catch(() => {});
-  } else {
-    toast('Share not supported. Downloading instead...', '', 1500);
-    window.triggerCSVDownload();
-  }
-};
-window.triggerCSVDownload = function(){
-  if (!lastSavedPayload) return;
-  const { blob, filename } = buildCSVBlob(lastSavedPayload);
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = filename;
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 5000);
-};
+// ==========================================
+// CUSTOMER ADD LOGIC (FIXED FOR FORMDATA ISSUE)
+// ==========================================
+async function saveCustomer(){
+  const code = document.getElementById('nc_code').value.trim();
+  const name = document.getElementById('nc_name').value.trim();
+  const routeSel = document.getElementById('nc_route');
+  const routeCode = routeSel.value;
+  const routeName = routeSel.options[routeSel.selectedIndex]?.dataset.name || '';
+  const phone = document.getElementById('nc_phone').value.trim();
+  const channel = document.getElementById('nc_channel').value;
+  
+  if (!code || !name || !routeCode){ toast('Code, Name & Route zaroori', 'error'); return; }
 
+  const btn = document.getElementById('btnSaveCustomer');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loader"></span>';
+  
+  try {
+    // Using URLSearchParams instead of FormData to bypass InfinityFree blocking
+    const params = new URLSearchParams();
+    params.append('action', 'hta_save_customer_ajax');
+    params.append('code', code);
+    params.append('name', name);
+    params.append('route_name', routeName);
+    params.append('route_code', routeCode);
+    params.append('phone', phone);
+    params.append('channel', channel);
+
+    const res = await fetch(`${API.replace(/\/$/,'')}/wp-admin/admin-ajax.php`, { 
+      method:'POST', 
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params.toString()
+    }).then(r => r.json());
+    
+    if (res && res.success){
+      toast('Customer saved ✓', 'success');
+      bootstrap.Modal.getInstance(document.getElementById('addCustModal')).hide();
+      await refreshFromServer(); // Refresh data to get new customer
+    } else {
+      toast(res.data?.message || 'Failed', 'error');
+    }
+  } catch(e){ 
+    toast('Network error', 'error'); 
+  }
+  
+  btn.disabled = false;
+  btn.textContent = 'Save Customer';
+}
+
+// ==========================================
+// AUTO SYNC, HISTORY, SETTINGS
+// ==========================================
 async function autoSync(manual=false){
   if (isSyncing) return;
   if (!navigator.onLine){ if(manual) toast('No internet', 'error'); return; }
@@ -880,10 +973,8 @@ async function autoSync(manual=false){
   }
   const remaining = LS.get('hta_pending_orders', []).filter(o => !succeeded.includes(o.order_id));
   LS.set('hta_pending_orders', remaining);
-  updatePendingUI();
-  renderPending();
-  isSyncing = false;
-  if (succeeded.length > 0) toast(`${succeeded.length} order${succeeded.length>1?'s':''} synced ✓`, 'success');
+  updatePendingUI(); renderPending(); isSyncing = false;
+  if (succeeded.length > 0) toast(`${succeeded.length} order synced ✓`, 'success');
   else if (manual) toast('Sync failed', 'error');
 }
 
@@ -899,105 +990,84 @@ function renderPending(){
       <div class="meta">
         <div class="cname">${esc(o.customer)}</div>
         <div class="oinfo">${esc(o.route)} · ${o.items.length} items</div>
-        <div class="oinfo text-mono" style="color:#0d6efd;font-size:10px">${esc(o.order_id)}</div>
       </div>
       <div style="text-align:right">
         <div class="odate">${new Date(o.created_at).toLocaleDateString()}</div>
-        <button class="btn btn-sm btn-outline-danger mt-1 py-0 px-2" onclick="removePending('${esc(o.order_id)}')"><i class="fa-solid fa-xmark" style="font-size:12px"></i></button>
+        <button class="btn btn-sm btn-outline-danger mt-1 py-0 px-2" onclick="removePending('${esc(o.order_id)}')"><i class="fa-solid fa-xmark"></i></button>
       </div>
     </div>`).join('');
 }
+
 window.removePending = function(orderId){
-  if (!confirm('Discard this offline order?')) return;
-  let pending = LS.get('hta_pending_orders', []).filter(o => o.order_id !== orderId);
-  LS.set('hta_pending_orders', pending);
-  updatePendingUI();
-  renderPending();
-  toast('Removed');
+  if (!confirm('Discard?')) return;
+  LS.set('hta_pending_orders', LS.get('hta_pending_orders', []).filter(o => o.order_id !== orderId));
+  updatePendingUI(); renderPending(); toast('Removed');
 };
 
 async function loadHistory(){
   const el = document.getElementById('historyList');
   el.innerHTML = '<div class="text-center py-4"><span class="loader"></span> Loading...</div>';
   try {
-    const from = document.getElementById('hFrom').value;
-    const to = document.getElementById('hTo').value;
-    const res = await apiGet('get_orders', { from, to, limit: 200 });
+    const res = await apiGet('get_orders', { from: document.getElementById('hFrom').value, to: document.getElementById('hTo').value, limit: 200 });
     if (!res.success || !res.data.length){
-      el.innerHTML = '<div class="empty-state"><i class="fa-solid fa-inbox"></i><p>No orders in this range</p></div>';
-      return;
+      el.innerHTML = '<div class="empty-state"><i class="fa-solid fa-inbox"></i><p>No orders</p></div>'; return;
     }
-    LS.set('hta_history_cache', res.data);
-    renderHistory(res.data);
+    LS.set('hta_history_cache', res.data); renderHistory(res.data);
   } catch(e){
     const cached = LS.get('hta_history_cache', []);
     if (cached.length) renderHistory(cached, true);
-    else el.innerHTML = '<div class="empty-state"><i class="fa-solid fa-wifi"></i><p>Offline — no cached history</p></div>';
+    else el.innerHTML = '<div class="empty-state"><i class="fa-solid fa-wifi"></i><p>Offline</p></div>';
   }
 }
 function renderHistory(rows, offline=false){
   const el = document.getElementById('historyList');
-  let html = '';
-  if (offline) html += '<div class="sync-banner"><i class="fa-solid fa-triangle-exclamation"></i> Showing cached data (offline)</div>';
+  let html = offline ? '<div class="alert alert-warning small py-1 mb-2"><i class="fa-solid fa-triangle-exclamation"></i> Cached data</div>' : '';
   html += rows.map(o => `
     <div class="order-row" onclick="openEdit('${esc(o.order_id)}')">
       <div class="meta">
         <div class="cname">${esc(o.customer_name)}</div>
         <div class="oinfo">${esc(o.route_name)} · ${o.item_count} items</div>
-        <div class="oinfo text-mono" style="color:#0d6efd;font-size:10px">${esc(o.order_id)}</div>
       </div>
       <div style="text-align:right">
         <div class="oamount">${money(o.total_net)}</div>
         <div class="odate">${(o.order_date||'').slice(0,10)}</div>
       </div>
-      <i class="fa-solid fa-chevron-right chev"></i>
     </div>`).join('');
   el.innerHTML = html;
 }
 
 window.openEdit = async function(orderId){
   const body = document.getElementById('editBody');
-  body.innerHTML = '<div class="text-center py-4"><span class="loader"></span> Loading...</div>';
+  body.innerHTML = '<div class="text-center py-4"><span class="loader"></span></div>';
   document.getElementById('editOrderId').textContent = orderId;
-  editCart = {};
-  editMeta = null;
+  editCart = {}; editMeta = null;
   new bootstrap.Modal(document.getElementById('editModal')).show();
   try {
     const res = await apiGet('get_order', { order_id: orderId });
-    if (!res.success){ body.innerHTML = '<div class="alert alert-danger">Failed to load order</div>'; return; }
+    if (!res.success){ body.innerHTML = '<div class="alert alert-danger">Failed</div>'; return; }
     editMeta = res.data;
     res.data.items.forEach(it => { editCart[it.sku] = { ...it }; });
     renderEditBody();
-  } catch(e){
-    body.innerHTML = '<div class="alert alert-danger">Offline — cannot edit</div>';
-  }
+  } catch(e){ body.innerHTML = '<div class="alert alert-danger">Offline</div>'; }
 };
 
 function renderEditBody(){
   const body = document.getElementById('editBody');
   const items = Object.values(editCart);
-  if (!items.length){
-    body.innerHTML = '<div class="empty-state"><i class="fa-solid fa-cart-shopping"></i><p>No items — save to delete order</p></div>';
-    updateEditTotal();
-    return;
-  }
-  body.innerHTML = `
-    <div class="alert alert-info small py-2 mb-3"><i class="fa-solid fa-info-circle me-1"></i>${esc(editMeta.customer)} · ${esc(editMeta.route)}</div>
-    ${items.map(it => `
-      <div class="edit-item">
-        <div class="e-head">
-          <div>
-            <div class="e-name">${esc(it.name)}</div>
-            <div class="e-sku">SKU: ${esc(it.sku)} · Rate: ${money(it.rate)}</div>
-          </div>
+  if (!items.length){ body.innerHTML = '<div class="empty-state"><p>No items</p></div>'; updateEditTotal(); return; }
+  
+  body.innerHTML = items.map(it => `
+      <div class="edit-item" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:10px; margin-bottom:8px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <div><div style="font-weight:700; font-size:13px;">${esc(it.name)}</div><div style="font-size:10px; color:#64748b;">SKU: ${esc(it.sku)} · Rate: ${money(it.rate)}</div></div>
           <button class="btn btn-sm btn-outline-danger py-0 px-2" onclick="removeEditItem('${esc(it.sku)}')"><i class="fa-solid fa-trash" style="font-size:11px"></i></button>
         </div>
-        <div class="e-row">
-          <div class="e-field"><label>CS</label><input type="number" inputmode="numeric" value="${it.cs}" onchange="updEdit('${esc(it.sku)}','cs',this.value)" onfocus="this.select()"></div>
-          <div class="e-field"><label>PC</label><input type="number" inputmode="numeric" value="${it.pc}" onchange="updEdit('${esc(it.sku)}','pc',this.value)" onfocus="this.select()"></div>
-          <div class="e-field"><label>Scheme</label><input type="number" step="0.01" inputmode="decimal" value="${it.scheme}" onchange="updEdit('${esc(it.sku)}','scheme',this.value)" onfocus="this.select()"></div>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1.5fr; gap:6px;">
+          <div style="background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:4px;"><label style="font-size:9px; font-weight:700; color:#64748b;">CS</label><input type="number" style="border:0; width:100%; font-weight:700;" value="${it.cs}" onchange="updEdit('${esc(it.sku)}','cs',this.value)"></div>
+          <div style="background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:4px;"><label style="font-size:9px; font-weight:700; color:#64748b;">PC</label><input type="number" style="border:0; width:100%; font-weight:700;" value="${it.pc}" onchange="updEdit('${esc(it.sku)}','pc',this.value)"></div>
+          <div style="background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:4px;"><label style="font-size:9px; font-weight:700; color:#64748b;">Scheme</label><input type="number" style="border:0; width:100%; font-weight:700;" value="${it.scheme}" onchange="updEdit('${esc(it.sku)}','scheme',this.value)"></div>
         </div>
-      </div>`).join('')}`;
+      </div>`).join('');
   updateEditTotal();
 }
 window.updEdit = function(sku, field, val){
@@ -1006,84 +1076,40 @@ window.updEdit = function(sku, field, val){
   else editCart[sku][field] = Math.max(0, parseInt(val) || 0);
   updateEditTotal();
 };
-window.removeEditItem = function(sku){
-  if (!confirm('Remove this item?')) return;
-  delete editCart[sku];
-  renderEditBody();
-};
+window.removeEditItem = function(sku){ if (!confirm('Remove?')) return; delete editCart[sku]; renderEditBody(); };
 function updateEditTotal(){
   let total = 0;
-  Object.values(editCart).forEach(it => {
-    const pcs = (it.cs * it.upc) + it.pc;
-    total += Math.max(0, pcs * it.rate - it.scheme);
-  });
+  Object.values(editCart).forEach(it => { total += Math.max(0, ((it.cs * it.upc) + it.pc) * it.rate - it.scheme); });
   document.getElementById('editTotal').textContent = money(total);
 }
+
 async function updateOrder(){
   if (!editMeta) return;
   const items = Object.values(editCart).filter(i => i.cs > 0 || i.pc > 0);
-  if (!items.length){
-    if (!confirm('No items left. Delete the entire order?')) return;
-    return deleteOrder();
-  }
-  const payload = {
-    order_id: editMeta.order_id,
-    items: items.map(i => ({ sku: i.sku, name: i.name, cs: i.cs, pc: i.pc, upc: i.upc, rate: i.rate, scheme: i.scheme }))
-  };
+  if (!items.length){ if (!confirm('No items. Delete order?')) return; return deleteOrder(); }
+  
   const btn = document.getElementById('btnUpdateOrder');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="loader"></span> Updating...';
+  btn.disabled = true; btn.innerHTML = '<span class="loader"></span>';
   try {
-    const res = await apiPost('update_order', payload);
+    const res = await apiPost('update_order', { order_id: editMeta.order_id, items: items.map(i => ({ sku: i.sku, name: i.name, cs: i.cs, pc: i.pc, upc: i.upc, rate: i.rate, scheme: i.scheme })) });
     if (res && res.success){
       bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
-      toast('Order updated ✓', 'success');
-      loadHistory();
-    } else toast(res.data?.message || 'Update failed', 'error');
+      toast('Order updated ✓', 'success'); loadHistory();
+    } else toast(res.data?.message || 'Failed', 'error');
   } catch(e){ toast('Network error', 'error'); }
-  btn.disabled = false;
-  btn.innerHTML = '<i class="fa-solid fa-floppy-disk me-2"></i>Update Order';
+  btn.disabled = false; btn.innerHTML = 'Update Order';
 }
+
 async function deleteOrder(){
   if (!editMeta) return;
-  if (!confirm('Delete this entire order permanently?')) return;
+  if (!confirm('Delete order permanently?')) return;
   try {
     const res = await apiPost('delete_order', { order_id: editMeta.order_id });
     if (res && res.success){
       bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
-      toast('Order deleted', 'success');
-      loadHistory();
+      toast('Deleted', 'success'); loadHistory();
     } else toast('Delete failed', 'error');
   } catch(e){ toast('Network error', 'error'); }
-}
-
-async function saveCustomer(){
-  const code = document.getElementById('nc_code').value.trim();
-  const name = document.getElementById('nc_name').value.trim();
-  const routeSel = document.getElementById('nc_route');
-  const routeCode = routeSel.value;
-  const routeName = routeSel.options[routeSel.selectedIndex]?.dataset.name || '';
-  const phone = document.getElementById('nc_phone').value.trim();
-  const channel = document.getElementById('nc_channel').value;
-  if (!code || !name || !routeCode){ toast('Code, Name & Route zaroori', 'error'); return; }
-  const fd = new FormData();
-  fd.append('action', 'hta_save_customer_ajax');
-  fd.append('code', code); fd.append('name', name);
-  fd.append('route_name', routeName); fd.append('route_code', routeCode);
-  fd.append('phone', phone); fd.append('channel', channel);
-  const btn = document.getElementById('btnSaveCustomer');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="loader"></span>';
-  try {
-    const res = await fetch(`${API.replace(/\/$/,'')}/wp-admin/admin-ajax.php`, { method:'POST', body:fd }).then(r => r.json());
-    if (res && res.success){
-      toast('Customer saved ✓', 'success');
-      bootstrap.Modal.getInstance(document.getElementById('addCustModal')).hide();
-      await refreshFromServer();
-    } else toast(res.data?.message || 'Failed', 'error');
-  } catch(e){ toast('Network error', 'error'); }
-  btn.disabled = false;
-  btn.textContent = 'Save Customer';
 }
 
 async function saveSettings(){
@@ -1093,39 +1119,53 @@ async function saveSettings(){
   if (!url || !key){ toast('URL & Key required', 'error'); return; }
   status.innerHTML = '<span class="loader"></span> Testing...';
   try {
-    const test = await fetch(url + '/wp-admin/admin-ajax.php?action=hta_mobile_api&endpoint=ping&api_key=' + encodeURIComponent(key))
-      .then(r => r.json());
+    const test = await fetch(url + '/wp-admin/admin-ajax.php?action=hta_mobile_api&endpoint=ping&api_key=' + encodeURIComponent(key)).then(r => r.json());
     if (test && test.success){
-      LS.set('hta_api_url', url);
-      LS.set('hta_api_key', key);
+      LS.set('hta_api_url', url); LS.set('hta_api_key', key);
       API = url; KEY = key;
-      status.innerHTML = '<span class="text-success"><i class="fa-solid fa-check-circle"></i> Connected! Loading data...</span>';
-      await refreshFromServer();
-      updateCacheCounters();
-      setTimeout(() => { status.innerHTML = '<span class="text-success"><i class="fa-solid fa-check-circle"></i> Ready</span>'; toast('Connected ✓', 'success'); }, 400);
+      status.innerHTML = '<span class="text-success">Connected! Loading...</span>';
+      await refreshFromServer(); updateCacheCounters();
+      setTimeout(() => { status.innerHTML = '<span class="text-success">Ready</span>'; toast('Connected ✓', 'success'); }, 400);
     } else {
-      status.innerHTML = '<span class="text-danger"><i class="fa-solid fa-times-circle"></i> Invalid API key</span>';
-      toast('Invalid key', 'error');
+      status.innerHTML = '<span class="text-danger">Invalid key</span>'; toast('Invalid key', 'error');
     }
-  } catch(e){
-    status.innerHTML = '<span class="text-danger"><i class="fa-solid fa-triangle-exclamation"></i> Cannot reach server</span>';
-    toast('Connection failed', 'error');
-  }
+  } catch(e){ status.innerHTML = '<span class="text-danger">Cannot reach server</span>'; toast('Connection failed', 'error'); }
 }
+
 function clearCache(){
-  if (!confirm('Clear all cached data? Pending orders will NOT be deleted.')) return;
+  if (!confirm('Clear all cached data?')) return;
   LS.del('hta_routes'); LS.del('hta_customers'); LS.del('hta_products'); LS.del('hta_history_cache');
   allRoutes = []; allCustomers = []; allProducts = [];
   populateRoutes(); populateAddCustRouteDropdown(); updateCacheCounters();
-  toast('Cache cleared', 'success');
-  setTimeout(() => location.reload(), 600);
+  toast('Cache cleared', 'success'); setTimeout(() => location.reload(), 600);
 }
 
-// Auto-refresh empty state on load
-document.addEventListener('DOMContentLoaded', () => {
-  renderActive();
-  updateSummary();
-});
+function buildCSVBlob(payload){
+  let rows = [['Order ID','Route','Customer Code','Customer','SKU','Name','CS','PC','Rate','Scheme','Net']];
+  payload.items.forEach(it => {
+    const pcs = (it.cs * it.upc) + it.pc;
+    const net = Math.max(0, (pcs * it.rate) - it.scheme);
+    rows.push([payload.order_id, payload.route, payload.customer_code, payload.customer, it.sku, it.name, it.cs, it.pc, it.rate, it.scheme, net.toFixed(2)]);
+  });
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  return { blob: new Blob([csv], {type:'text/csv;charset=utf-8;'}), filename: `${payload.customer_code}_${payload.order_id}.csv` };
+}
+window.triggerCSVShare = function(){
+  if (!lastSavedPayload) return;
+  const { blob, filename } = buildCSVBlob(lastSavedPayload);
+  const file = new File([blob], filename, { type: 'text/csv' });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) navigator.share({ files: [file], title: 'Order', text: 'HTA DMS Order' }).catch(() => {});
+  else window.triggerCSVDownload();
+};
+window.triggerCSVDownload = function(){
+  if (!lastSavedPayload) return;
+  const { blob, filename } = buildCSVBlob(lastSavedPayload);
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+};
+
 </script>
 </body>
 </html>
