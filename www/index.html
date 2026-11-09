@@ -77,18 +77,49 @@
   .empty-state i { font-size: 42px; margin-bottom: 10px; opacity: .5; }
   .empty-state p { margin: 0; font-size: 13px; }
   .hidden { display: none !important; }
+
+  /* LOGIN SCREEN STYLES */
+  #loginScreen { position: fixed; inset: 0; background: #f1f5f9; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+  .login-box { background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
 </style>
 </head>
 <body>
 
+<!-- LOGIN SCREEN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div style="text-align:center; margin-bottom:20px;">
+      <i class="fa-solid fa-boxes-packing text-primary" style="font-size:40px;"></i>
+      <h4 style="font-weight:700; margin-top:10px;">HTA DMS Login</h4>
+      <p class="text-muted small">Apni DSR ID se login karein</p>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Username</label>
+      <input type="text" id="loginUser" class="form-control" placeholder="e.g. dsr_ali" autocomplete="username">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Password</label>
+      <input type="password" id="loginPass" class="form-control" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button id="btnLogin" class="btn btn-primary w-100 fw-bold" style="height:48px;">Login</button>
+    <div id="loginError" class="text-danger small mt-2 text-center" style="display:none;"></div>
+    
+    <div style="text-align:center; margin-top:20px; border-top:1px solid #e2e8f0; padding-top:15px;">
+       <button class="btn btn-link text-muted btn-sm text-decoration-none" onclick="showServerSettings()">⚙️ Server Settings</button>
+    </div>
+  </div>
+</div>
+
 <div class="topbar">
   <h6><i class="fa-solid fa-boxes-packing text-warning"></i><span id="topTitle">HTA DMS</span></h6>
   <div class="badges">
+    <span id="userBadge" class="badge bg-secondary hidden"><i class="fa-solid fa-user"></i> <span id="userName">User</span></span>
     <span id="netBadge" class="badge bg-success"><span class="sync-dot" style="background:#fff"></span>Online</span>
     <span id="syncBadge" class="badge bg-warning text-dark hidden"><i class="fa-solid fa-cloud-arrow-up"></i> <span id="syncCount">0</span></span>
   </div>
 </div>
 
+<!-- ================= TABS ================= -->
 <section id="tab-book" class="p-2" style="padding-bottom: 160px !important;">
   <div class="cardx">
     <div class="row g-2">
@@ -150,7 +181,7 @@
 <section id="tab-pending" class="p-2 hidden" style="padding-bottom: 100px !important;">
   <div class="cardx">
     <h6><i class="fa-solid fa-cloud-arrow-up text-warning"></i>Pending Orders</h6>
-    <p class="text-muted small mb-2">Orders offline save hue yahan dikhenge. Internet aane par auto-sync.</p>
+    <p class="text-muted small mb-2">Orders offline save hue yahan dikhenge.</p>
     <button class="btn btn-warning btn-sm w-100 fw-bold" id="btnForceSync"><i class="fa-solid fa-arrows-rotate"></i> Sync Now</button>
   </div>
   <div id="pendingList"></div>
@@ -163,22 +194,14 @@
     <input type="url" id="setUrl" class="form-control form-control-sm mb-2" placeholder="https://yoursite.com">
     <label class="form-label">Mobile API Key</label>
     <input type="text" id="setKey" class="form-control form-control-sm mb-2 text-mono" placeholder="HTA-xxxxxxxxxxxxx">
-    <button class="btn btn-primary btn-sm w-100 fw-bold" id="btnSaveSettings"><i class="fa-solid fa-floppy-disk"></i> Save & Test Connection</button>
-    <div id="connStatus" class="mt-2 small"></div>
+    <button class="btn btn-primary btn-sm w-100 fw-bold mb-2" id="btnSaveSettings"><i class="fa-solid fa-floppy-disk"></i> Save & Test Connection</button>
+    <div id="connStatus" class="small mb-2"></div>
+    <hr>
+    <button class="btn btn-outline-danger btn-sm w-100 fw-bold" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout Account</button>
   </div>
-  <div class="cardx">
-    <h6><i class="fa-solid fa-database text-success"></i>Local Cache</h6>
-    <div class="row g-2 text-center mb-2">
-      <div class="col-4"><div class="p-2 bg-light rounded"><div class="fw-bold" id="cacheRoutes">0</div><small class="text-muted">Routes</small></div></div>
-      <div class="col-4"><div class="p-2 bg-light rounded"><div class="fw-bold" id="cacheCust">0</div><small class="text-muted">Customers</small></div></div>
-      <div class="col-4"><div class="p-2 bg-light rounded"><div class="fw-bold" id="cacheProd">0</div><small class="text-muted">Products</small></div></div>
-    </div>
-    <button class="btn btn-outline-primary btn-sm w-100 mb-2" id="btnRefreshData"><i class="fa-solid fa-cloud-arrow-down"></i> Refresh from Server</button>
-    <button class="btn btn-outline-danger btn-sm w-100" id="btnClearCache"><i class="fa-solid fa-trash"></i> Clear All Cache</button>
-  </div>
-  <div class="cardx text-center text-muted small"><div><strong>HTA DMS Mobile</strong> v1.3</div><div>Hussain Traders</div></div>
 </section>
 
+<!-- MODALS (Cart, Edit, Customer, Success) -->
 <div class="modal fade" id="reviewModal" tabindex="-1" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
@@ -261,7 +284,7 @@
         </div>
       </div>
       <div class="modal-footer justify-content-center border-0 pt-0">
-        <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close & Next Order</button>
+        <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -269,7 +292,7 @@
 
 <div id="toast"></div>
 
-<nav class="bottom-nav">
+<nav class="bottom-nav hidden" id="mainNav">
   <button data-tab="book" class="active"><i class="fa-solid fa-cart-plus"></i>Book</button>
   <button data-tab="history"><i class="fa-solid fa-clock-rotate-left"></i>History</button>
   <button data-tab="pending"><i class="fa-solid fa-cloud-arrow-up"></i>Pending<span class="pending-dot hidden" id="pendingDot">0</span></button>
@@ -278,7 +301,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-let API = '', KEY = '';
+let API = '', KEY = '', TOKEN = '';
 let allRoutes = [], allCustomers = [], allProducts = [];
 let filteredProducts = [];
 let orderCart = {}, activeItem = null, currentChannel = '';
@@ -312,6 +335,36 @@ function genOrderId(){
 document.addEventListener('DOMContentLoaded', () => {
   API = LS.get('hta_api_url', '');
   KEY = LS.get('hta_api_key', '');
+  TOKEN = LS.get('hta_user_token', '');
+  const USER_NAME = LS.get('hta_user_name', 'User');
+
+  // 1. Agar API config nahi hai, to settings tab kholo
+  if (!API || !KEY) {
+    showTab('settings');
+    document.getElementById('setUrl').value = API;
+    document.getElementById('setKey').value = KEY;
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('mainNav').classList.add('hidden');
+    bindEvents();
+    return;
+  }
+
+  // 2. Agar config hai par login nahi hai
+  if (!TOKEN) {
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('mainNav').classList.add('hidden');
+    bindEvents();
+    document.getElementById('btnLogin').addEventListener('click', doLogin);
+    document.getElementById('loginPass').addEventListener('keypress', e => { if(e.key === 'Enter') doLogin(); });
+    return;
+  }
+
+  // 3. Logged In
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('mainNav').classList.remove('hidden');
+  document.getElementById('userBadge').classList.remove('hidden');
+  document.getElementById('userName').textContent = USER_NAME;
+  
   document.getElementById('setUrl').value = API;
   document.getElementById('setKey').value = KEY;
   document.getElementById('hFrom').value = todayStr(-30);
@@ -325,14 +378,55 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('online',  () => { updateNetBadge(); autoSync(); });
   window.addEventListener('offline', updateNetBadge);
 
-  if (API && KEY) {
-    loadCache();
-    refreshFromServer();
-    autoSync();
-  } else {
-    showTab('settings');
-  }
+  loadCache();
+  refreshFromServer();
+  autoSync();
 });
+
+async function doLogin() {
+  const user = document.getElementById('loginUser').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  const btn = document.getElementById('btnLogin');
+  const err = document.getElementById('loginError');
+
+  if (!user || !pass) { err.style.display='block'; err.textContent='Username/Password khali hai'; return; }
+
+  btn.disabled = true; btn.innerHTML = '<span class="loader"></span>';
+
+  try {
+    const res = await fetch(`${API.replace(/\/$/,'')}/wp-admin/admin-ajax.php?action=hta_mobile_api&endpoint=login&api_key=${encodeURIComponent(KEY)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ username: user, password: pass }).toString()
+    }).then(r => r.json());
+
+    if (res.success) {
+      LS.set('hta_user_token', res.data.token);
+      LS.set('hta_user_name', res.data.name);
+      location.reload(); 
+    } else {
+      err.style.display='block'; err.textContent = res.data.message;
+      btn.disabled = false; btn.textContent = 'Login';
+    }
+  } catch(e) {
+    err.style.display='block'; err.textContent = 'Server se connect nahi ho saka';
+    btn.disabled = false; btn.textContent = 'Login';
+  }
+}
+
+window.logout = function() {
+  if (!confirm('Kya aap logout karna chahte hain?')) return;
+  LS.del('hta_user_token');
+  LS.del('hta_user_name');
+  LS.del('hta_customers'); // Clear customer cache so next user gets fresh data
+  location.reload();
+};
+
+window.showServerSettings = function() {
+  document.getElementById('loginScreen').style.display = 'none';
+  showTab('settings');
+  document.getElementById('mainNav').classList.remove('hidden');
+};
 
 function bindNav(){
   document.querySelectorAll('.bottom-nav button').forEach(btn => {
@@ -356,6 +450,7 @@ async function apiGet(endpoint, params = {}){
   url.searchParams.set('action', 'hta_mobile_api');
   url.searchParams.set('endpoint', endpoint);
   url.searchParams.set('api_key', KEY);
+  url.searchParams.set('user_token', TOKEN);
   Object.entries(params).forEach(([k,v]) => url.searchParams.set(k, v));
   const r = await fetch(url.toString());
   return r.json();
@@ -363,7 +458,7 @@ async function apiGet(endpoint, params = {}){
 async function apiPost(endpoint, body){
   const formData = new URLSearchParams();
   formData.append('payload', JSON.stringify(body));
-  const url = API.replace(/\/$/, '') + '/wp-admin/admin-ajax.php?action=hta_mobile_api&endpoint=' + endpoint + '&api_key=' + encodeURIComponent(KEY);
+  const url = API.replace(/\/$/, '') + '/wp-admin/admin-ajax.php?action=hta_mobile_api&endpoint=' + endpoint + '&api_key=' + encodeURIComponent(KEY) + '&user_token=' + encodeURIComponent(TOKEN);
   const r = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -399,31 +494,30 @@ function loadCache(){
   allProducts  = LS.get('hta_products', []);
   populateRoutes();
   populateAddCustRouteDropdown();
-  updateCacheCounters();
   populateFilterDropdowns();
   applyFilters();
 }
 async function refreshFromServer(){
-  if (!API || !KEY) return;
+  if (!API || !KEY || !TOKEN) return;
   try {
     const res = await apiGet('bootstrap');
     if (res.success){
       allRoutes    = res.data.routes || [];
       allCustomers = res.data.customers || [];
       allProducts  = res.data.products || [];
+      if (res.data.user_name) {
+        LS.set('hta_user_name', res.data.user_name);
+        document.getElementById('userName').textContent = res.data.user_name;
+      }
       LS.set('hta_routes', allRoutes); LS.set('hta_customers', allCustomers); LS.set('hta_products', allProducts);
       populateRoutes();
       populateAddCustRouteDropdown();
-      updateCacheCounters();
       populateFilterDropdowns();
       applyFilters();
+    } else if (res.data && res.data.message && res.data.message.includes('expired')) {
+      logout();
     }
   } catch(e){ console.warn('bootstrap failed', e); }
-}
-function updateCacheCounters(){
-  document.getElementById('cacheRoutes').textContent = allRoutes.length;
-  document.getElementById('cacheCust').textContent = allCustomers.length;
-  document.getElementById('cacheProd').textContent = allProducts.length;
 }
 function populateRoutes(){
   const sel = document.getElementById('routeSelect');
@@ -433,10 +527,13 @@ function populateRoutes(){
     if (seen.has(r.route_name)) return; seen.add(r.route_name);
     sel.innerHTML += `<option value="${esc(r.route_name)}">${esc(r.route_name)}</option>`;
   });
-  allCustomers.forEach(c => {
-    if (seen.has(c.route)) return; seen.add(c.route);
-    sel.innerHTML += `<option value="${esc(c.route)}">${esc(c.route)}</option>`;
-  });
+  // Fallback: If no routes returned, but customers exist, populate from customers
+  if(allRoutes.length === 0 && allCustomers.length > 0) {
+     allCustomers.forEach(c => {
+        if (seen.has(c.route)) return; seen.add(c.route);
+        sel.innerHTML += `<option value="${esc(c.route)}">${esc(c.route)}</option>`;
+     });
+  }
 }
 function populateAddCustRouteDropdown(){
   const sel = document.getElementById('nc_route');
@@ -446,29 +543,22 @@ function populateAddCustRouteDropdown(){
   });
 }
 
-// ==========================================
-// SMART FILTERS & PRODUCT CATALOG LOGIC
-// ==========================================
+// FILTERS
 function populateFilterDropdowns() {
   const brandSel = document.getElementById('filterBrand');
   const catSel = document.getElementById('filterCategory');
-  
   const brands = [...new Set(allProducts.map(p => p.brand).filter(Boolean))].sort();
   const cats = [...new Set(allProducts.map(p => p.category).filter(Boolean))].sort();
-
   brandSel.innerHTML = '<option value="">All Brands</option>';
   brands.forEach(b => brandSel.innerHTML += `<option value="${esc(b)}">${esc(b)}</option>`);
-
   catSel.innerHTML = '<option value="">All Categories</option>';
   cats.forEach(c => catSel.innerHTML += `<option value="${esc(c)}">${esc(c)}</option>`);
 }
-
 function updateDependentFilters(source) {
   const brandSel = document.getElementById('filterBrand');
   const catSel = document.getElementById('filterCategory');
   const currentBrand = brandSel.value;
   const currentCat = catSel.value;
-
   if (source === 'brand') {
     const availableCats = [...new Set(allProducts.filter(p => !currentBrand || p.brand === currentBrand).map(p => p.category).filter(Boolean))].sort();
     catSel.innerHTML = '<option value="">All Categories</option>';
@@ -481,29 +571,21 @@ function updateDependentFilters(source) {
     if (currentBrand && !availableBrands.includes(currentBrand)) brandSel.value = '';
   }
 }
-
 function applyFilters() {
   const q = document.getElementById('searchInput').value.toLowerCase().trim();
   const b = document.getElementById('filterBrand').value;
   const c = document.getElementById('filterCategory').value;
-
   filteredProducts = allProducts.filter(p => {
     if (b && p.brand !== b) return false;
     if (c && p.category !== c) return false;
     if (q && !(p.name||'').toLowerCase().includes(q) && !(p.sku||'').toLowerCase().includes(q)) return false;
     return true;
   });
-
   renderProductList();
 }
-
 function renderProductList() {
   const el = document.getElementById('productList');
-  if (filteredProducts.length === 0) {
-    el.innerHTML = '<div class="text-center text-muted py-4">No products found</div>';
-    return;
-  }
-  
+  if (filteredProducts.length === 0) { el.innerHTML = '<div class="text-center text-muted py-4">No products found</div>'; return; }
   el.innerHTML = filteredProducts.map(p => {
     const stockCls = (p.stock_pcs||0) <= 0 ? 'text-danger' : 'text-success';
     return `
@@ -521,17 +603,13 @@ function bindEvents(){
   document.getElementById('searchInput').addEventListener('input', applyFilters);
   document.getElementById('filterBrand').addEventListener('change', () => { updateDependentFilters('brand'); applyFilters(); });
   document.getElementById('filterCategory').addEventListener('change', () => { updateDependentFilters('category'); applyFilters(); });
-
   document.getElementById('routeSelect').addEventListener('change', onRouteChange);
   document.getElementById('customerSelect').addEventListener('change', onCustomerChange);
-
   document.getElementById('cartBtn').addEventListener('click', openReview);
   document.getElementById('btnSaveOrder').addEventListener('click', saveOrder);
   document.getElementById('btnLoadHistory').addEventListener('click', loadHistory);
   document.getElementById('btnForceSync').addEventListener('click', () => autoSync(true));
   document.getElementById('btnSaveSettings').addEventListener('click', saveSettings);
-  document.getElementById('btnClearCache').addEventListener('click', clearCache);
-  document.getElementById('btnRefreshData').addEventListener('click', async () => { toast('Refreshing...', '', 1000); await refreshFromServer(); toast('Data refreshed ✓', 'success'); });
   document.getElementById('btnUpdateOrder').addEventListener('click', updateOrder);
   document.getElementById('btnDeleteOrder').addEventListener('click', deleteOrder);
   
@@ -570,48 +648,32 @@ function onCustomerChange(e){
   currentChannel = opt ? opt.dataset.channel : '';
 }
 
-// ==========================================
-// PRODUCT ENTRY & SMART SCHEME LIMIT LOGIC
-// ==========================================
 window.openProductEntry = function(sku){
   const p = allProducts.find(x => x.sku === sku);
   if (!p) return;
   const existing = orderCart[sku];
-  activeItem = {
-    product: p,
-    cs: existing ? existing.cs : 0,
-    pc: existing ? existing.pc : 0,
-    scheme: existing ? existing.scheme : 0
-  };
-  
+  activeItem = { product: p, cs: existing ? existing.cs : 0, pc: existing ? existing.pc : 0, scheme: existing ? existing.scheme : 0 };
   document.getElementById('catalogContainer').classList.add('hidden');
   document.getElementById('activeEntry').classList.remove('hidden');
   renderActiveEntry();
   document.getElementById('activeEntry').scrollIntoView({behavior:'smooth', block:'start'});
 };
-
 function closeActiveEntry() {
   activeItem = null;
   document.getElementById('activeEntry').classList.add('hidden');
   document.getElementById('activeEntry').innerHTML = '';
   document.getElementById('catalogContainer').classList.remove('hidden');
 }
-
 function renderActiveEntry(){
   const c = document.getElementById('activeEntry');
   if (!activeItem){ closeActiveEntry(); return; }
-  
   const p = activeItem.product;
   const stockCls = (p.stock_pcs||0) <= 0 ? 'bg-danger' : 'bg-success';
   const stockTxt = p.stock_str || '0 CS / 0 PC';
   const tpCs = p.rate * p.upc;
   const totalPcs = (activeItem.cs * p.upc) + activeItem.pc;
   let initialNetRateCs = tpCs;
-  if (totalPcs > 0 && activeItem.scheme > 0){
-    const discPerCs = activeItem.scheme / (totalPcs / p.upc);
-    initialNetRateCs = tpCs - discPerCs;
-  }
-  
+  if (totalPcs > 0 && activeItem.scheme > 0){ initialNetRateCs = tpCs - (activeItem.scheme / (totalPcs / p.upc)); }
   const maxLimitPerPc = parseFloat(p.scheme_limit || 0);
   const hasLimit = currentChannel !== 'Wholesale' && maxLimitPerPc > 0;
   const totalLimitAmount = totalPcs * maxLimitPerPc;
@@ -620,57 +682,23 @@ function renderActiveEntry(){
     <div class="entry-card">
       <div class="head-row">
         <div style="flex:1;min-width:0">
-          <div>
-            <span class="badge bg-secondary" style="font-size:10px">${esc(p.sku)}</span>
-            <span class="badge ${stockCls} ms-1" style="font-size:10px"><i class="fa-solid fa-boxes-stacked me-1"></i>Stock: ${esc(stockTxt)}</span>
-          </div>
+          <div><span class="badge bg-secondary" style="font-size:10px">${esc(p.sku)}</span><span class="badge ${stockCls} ms-1" style="font-size:10px"><i class="fa-solid fa-boxes-stacked me-1"></i>Stock: ${esc(stockTxt)}</span></div>
           <div class="p-title">${esc(p.name)}</div>
           <div class="p-tp">TP: ${money(p.rate)}/PC (${money(tpCs)}/CS)</div>
         </div>
         <button class="btn-close" onclick="closeActiveEntry()"></button>
       </div>
-
       <div class="qty-row">
-        <div class="qty-box">
-          <label>Cartons</label>
-          <div class="qty-controls">
-            <button class="qty-btn" onclick="chgQty('cs',-1)">−</button>
-            <input type="number" id="qCs" class="qty-field" value="${activeItem.cs}" inputmode="numeric" oninput="syncQty()" onfocus="this.select()">
-            <button class="qty-btn" onclick="chgQty('cs',1)">+</button>
-          </div>
-        </div>
-        <div class="qty-box">
-          <label>Pieces</label>
-          <div class="qty-controls">
-            <button class="qty-btn" onclick="chgQty('pc',-1)">−</button>
-            <input type="number" id="qPc" class="qty-field" value="${activeItem.pc}" inputmode="numeric" oninput="syncQty()" onfocus="this.select()">
-            <button class="qty-btn" onclick="chgQty('pc',1)">+</button>
-          </div>
-        </div>
+        <div class="qty-box"><label>Cartons</label><div class="qty-controls"><button class="qty-btn" onclick="chgQty('cs',-1)">−</button><input type="number" id="qCs" class="qty-field" value="${activeItem.cs}" inputmode="numeric" oninput="syncQty()" onfocus="this.select()"><button class="qty-btn" onclick="chgQty('cs',1)">+</button></div></div>
+        <div class="qty-box"><label>Pieces</label><div class="qty-controls"><button class="qty-btn" onclick="chgQty('pc',-1)">−</button><input type="number" id="qPc" class="qty-field" value="${activeItem.pc}" inputmode="numeric" oninput="syncQty()" onfocus="this.select()"><button class="qty-btn" onclick="chgQty('pc',1)">+</button></div></div>
       </div>
-
       <div class="row g-2 mb-2">
-        <div class="col-6">
-          <label class="form-label">Net Rate / CS (Rs.)</label>
-          <input type="number" step="0.01" id="qNetRateCs" class="form-control form-control-sm" value="${initialNetRateCs.toFixed(2)}" inputmode="decimal" oninput="calcSchemeFromNet()" onfocus="this.select()">
-        </div>
-        <div class="col-6">
-          <label class="form-label">Scheme Discount (Rs.)</label>
-          <input type="number" step="0.01" id="qScheme" class="form-control form-control-sm" value="${activeItem.scheme}" inputmode="decimal" oninput="calcNetFromScheme()" onfocus="this.select()">
-        </div>
+        <div class="col-6"><label class="form-label">Net Rate / CS (Rs.)</label><input type="number" step="0.01" id="qNetRateCs" class="form-control form-control-sm" value="${initialNetRateCs.toFixed(2)}" inputmode="decimal" oninput="calcSchemeFromNet()" onfocus="this.select()"></div>
+        <div class="col-6"><label class="form-label">Scheme Discount (Rs.)</label><input type="number" step="0.01" id="qScheme" class="form-control form-control-sm" value="${activeItem.scheme}" inputmode="decimal" oninput="calcNetFromScheme()" onfocus="this.select()"></div>
       </div>
-      
-      ${hasLimit ? `
-      <div class="mb-2">
-        <span id="schemeLimitBadge" class="badge bg-warning text-dark" style="font-size:11px;">
-          Total Max Limit: ${money(totalLimitAmount)} (${maxLimitPerPc}/PC)
-        </span>
-      </div>` : ''}
+      ${hasLimit ? `<div class="mb-2"><span id="schemeLimitBadge" class="badge bg-warning text-dark" style="font-size:11px;">Total Max Limit: ${money(totalLimitAmount)} (${maxLimitPerPc}/PC)</span></div>` : ''}
       <div id="schemeWarning" class="small text-danger mb-2" style="display:none"></div>
-
-      <button class="btn btn-primary w-100 fw-bold" style="height:46px" onclick="commitItem()">
-        <i class="fa-solid fa-cart-plus me-2"></i>Add / Update Cart
-      </button>
+      <button class="btn btn-primary w-100 fw-bold" style="height:46px" onclick="commitItem()"><i class="fa-solid fa-cart-plus me-2"></i>Add / Update Cart</button>
     </div>`;
   validateScheme();
 }
@@ -684,19 +712,13 @@ window.syncQty = function(){
   if (!activeItem) return;
   activeItem.cs = parseInt(document.getElementById('qCs').value) || 0;
   activeItem.pc = parseInt(document.getElementById('qPc').value) || 0;
-  
-  // Update Max Limit dynamically
   const p = activeItem.product;
   const totalPcs = (activeItem.cs * p.upc) + activeItem.pc;
   const maxLimitPerPc = parseFloat(p.scheme_limit || 0);
   const badge = document.getElementById('schemeLimitBadge');
-  if (badge && maxLimitPerPc > 0) {
-    badge.innerHTML = `Total Max Limit: ${money(totalPcs * maxLimitPerPc)} (${maxLimitPerPc}/PC)`;
-  }
-  
+  if (badge && maxLimitPerPc > 0) { badge.innerHTML = `Total Max Limit: ${money(totalPcs * maxLimitPerPc)} (${maxLimitPerPc}/PC)`; }
   calcSchemeFromNet();
 };
-
 window.calcSchemeFromNet = function(){
   if (!activeItem) return;
   const p = activeItem.product;
@@ -713,9 +735,7 @@ window.calcSchemeFromNet = function(){
     const totalScheme = (totalPcs / p.upc) * discPerCs;
     schEl.value = Math.max(0, totalScheme).toFixed(2);
     activeItem.scheme = parseFloat(schEl.value) || 0;
-  } else if (netEl.value === ''){
-    schEl.value = '0'; activeItem.scheme = 0;
-  }
+  } else if (netEl.value === ''){ schEl.value = '0'; activeItem.scheme = 0; }
   validateScheme();
 };
 window.calcNetFromScheme = function(){
@@ -729,16 +749,10 @@ window.calcNetFromScheme = function(){
   const schEl = document.getElementById('qScheme');
   if (!netEl || !schEl) return;
   const scheme = parseFloat(schEl.value) || 0;
-  if (totalPcs > 0){
-    const discPerCs = scheme / (totalPcs / p.upc);
-    netEl.value = (tpCs - discPerCs).toFixed(2);
-  } else {
-    netEl.value = tpCs.toFixed(2);
-  }
+  if (totalPcs > 0){ netEl.value = (tpCs - (scheme / (totalPcs / p.upc))).toFixed(2); } else { netEl.value = tpCs.toFixed(2); }
   activeItem.scheme = scheme;
   validateScheme();
 };
-
 function validateScheme(){
   const warn = document.getElementById('schemeWarning');
   if (!warn || !activeItem) return;
@@ -747,14 +761,8 @@ function validateScheme(){
   if (maxPc <= 0 || currentChannel === 'Wholesale'){ warn.style.display='none'; return; }
   const tpcs = (activeItem.cs * p.upc) + activeItem.pc;
   const maxAllowed = tpcs * maxPc;
-  if (activeItem.scheme > maxAllowed + 0.01){
-    warn.style.display = 'block';
-    warn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Limit exceeded! Max allowed: ${money(maxAllowed)}`;
-  } else {
-    warn.style.display = 'none';
-  }
+  if (activeItem.scheme > maxAllowed + 0.01){ warn.style.display = 'block'; warn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Limit exceeded! Max allowed: ${money(maxAllowed)}`; } else { warn.style.display = 'none'; }
 }
-
 window.commitItem = function(){
   if (!activeItem) return;
   if (activeItem.cs === 0 && activeItem.pc === 0){ toast('Qty enter karein', 'error'); return; }
@@ -762,18 +770,12 @@ window.commitItem = function(){
   const maxPc = parseFloat(p.scheme_limit||0);
   if (maxPc > 0 && currentChannel !== 'Wholesale'){
     const tpcs = (activeItem.cs * p.upc) + activeItem.pc;
-    const maxAllowed = tpcs * maxPc;
-    if (activeItem.scheme > maxAllowed + 0.01){ toast('Scheme limit exceeded!', 'error'); return; }
+    if (activeItem.scheme > tpcs * maxPc + 0.01){ toast('Scheme limit exceeded!', 'error'); return; }
   }
   orderCart[p.sku] = { ...activeItem };
-  closeActiveEntry();
-  updateSummary();
-  toast('Added to cart ✓', 'success', 1200);
+  closeActiveEntry(); updateSummary(); toast('Added to cart ✓', 'success', 1200);
 };
 
-// ==========================================
-// CART REVIEW (READ-ONLY WITH EDIT BUTTON)
-// ==========================================
 function updateSummary(){
   let count = 0, net = 0;
   Object.values(orderCart).forEach(it => {
@@ -784,22 +786,11 @@ function updateSummary(){
   document.getElementById('cartTotal').textContent = moneyShort(net);
   document.getElementById('cartBtn').disabled = count === 0;
 }
-
-function openReview(){
-  renderCartItems();
-  new bootstrap.Modal(document.getElementById('reviewModal')).show();
-}
-
+function openReview(){ renderCartItems(); new bootstrap.Modal(document.getElementById('reviewModal')).show(); }
 function renderCartItems() {
   const items = Object.values(orderCart).filter(i => i.cs > 0 || i.pc > 0);
   const body = document.getElementById('reviewBody');
-  
-  if (items.length === 0) {
-    body.innerHTML = '<div class="text-center text-muted py-4">Cart khali hai</div>';
-    document.getElementById('summaryNet').textContent = 'Rs. 0';
-    return;
-  }
-
+  if (items.length === 0) { body.innerHTML = '<div class="text-center text-muted py-4">Cart khali hai</div>'; document.getElementById('summaryNet').textContent = 'Rs. 0'; return; }
   let net = 0;
   body.innerHTML = items.map(it => {
     const pcs = (it.cs * it.product.upc) + it.pc;
@@ -808,19 +799,11 @@ function renderCartItems() {
     return `
     <div class="cart-item-readonly">
       <div class="d-flex justify-content-between align-items-start mb-1">
-        <div>
-          <div style="font-weight:700; font-size:13px; color:#0f172a;">${esc(it.product.name)}</div>
-          <div style="font-size:11px; color:#64748b;">SKU: ${esc(it.product.sku)}</div>
-        </div>
-        <div class="text-end">
-          <div class="fw-bold text-success" style="font-size:14px;">${money(amount)}</div>
-        </div>
+        <div><div style="font-weight:700; font-size:13px; color:#0f172a;">${esc(it.product.name)}</div><div style="font-size:11px; color:#64748b;">SKU: ${esc(it.product.sku)}</div></div>
+        <div class="text-end"><div class="fw-bold text-success" style="font-size:14px;">${money(amount)}</div></div>
       </div>
       <div class="d-flex justify-content-between align-items-center mt-2 p-2 bg-light rounded">
-        <div style="font-size:12px; color:#334155;">
-          Qty: <b>${it.cs} CS / ${it.pc} PC</b> <br>
-          Scheme: <b>${money(it.scheme)}</b>
-        </div>
+        <div style="font-size:12px; color:#334155;">Qty: <b>${it.cs} CS / ${it.pc} PC</b> <br> Scheme: <b>${money(it.scheme)}</b></div>
         <div class="d-flex gap-1">
           <button class="btn btn-sm btn-outline-primary py-1 px-2" onclick="editFromCart('${esc(it.product.sku)}')"><i class="fa-solid fa-pen" style="font-size:11px"></i> Edit</button>
           <button class="btn btn-sm btn-outline-danger py-1 px-2" onclick="deleteFromCart('${esc(it.product.sku)}')"><i class="fa-solid fa-trash" style="font-size:11px"></i></button>
@@ -828,84 +811,49 @@ function renderCartItems() {
       </div>
     </div>`;
   }).join('');
-  
   document.getElementById('summaryNet').textContent = money(net);
 }
+window.deleteFromCart = function(sku) { delete orderCart[sku]; renderCartItems(); updateSummary(); };
+window.editFromCart = function(sku) { bootstrap.Modal.getInstance(document.getElementById('reviewModal')).hide(); openProductEntry(sku); };
 
-window.deleteFromCart = function(sku) {
-  delete orderCart[sku];
-  renderCartItems();
-  updateSummary();
-};
-
-window.editFromCart = function(sku) {
-  bootstrap.Modal.getInstance(document.getElementById('reviewModal')).hide();
-  openProductEntry(sku); // This handles opening the entry form and scrolling
-};
-
-// ==========================================
-// SAVE ORDER & SYNC
-// ==========================================
 async function saveOrder(){
   const route = document.getElementById('routeSelect').value;
   const custSel = document.getElementById('customerSelect');
   const custCode = custSel.value;
   const custName = custSel.options[custSel.selectedIndex]?.dataset.name || '';
-  
   if (!route || !custCode){ toast('Route & Customer select karein', 'error'); return; }
   const items = Object.values(orderCart).filter(i => i.cs > 0 || i.pc > 0);
   if (!items.length){ toast('Cart khali hai', 'error'); return; }
 
   const orderId = genOrderId();
   const payload = {
-    order_id: orderId,
-    route, customer: custName, customer_code: custCode,
+    order_id: orderId, route, customer: custName, customer_code: custCode,
     items: items.map(i => ({ sku: i.product.sku, name: i.product.name, cs: i.cs, pc: i.pc, upc: i.product.upc, rate: i.product.rate, scheme: i.scheme })),
     client_uuid: orderId, created_at: Date.now()
   };
   lastSavedPayload = payload;
 
   const btn = document.getElementById('btnSaveOrder');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="loader"></span> Saving...';
+  btn.disabled = true; btn.innerHTML = '<span class="loader"></span> Saving...';
 
   let synced = false;
   if (navigator.onLine){
-    try {
-      const res = await apiPost('save_order', payload);
-      if (res && res.success) synced = true;
-    } catch(e){ synced = false; }
+    try { const res = await apiPost('save_order', payload); if (res && res.success) synced = true; } catch(e){ synced = false; }
   }
-  
   if (!synced){
     const pending = LS.get('hta_pending_orders', []);
-    pending.push(payload);
-    LS.set('hta_pending_orders', pending);
-    updatePendingUI();
+    pending.push(payload); LS.set('hta_pending_orders', pending); updatePendingUI();
   }
-
-  btn.disabled = false;
-  btn.innerHTML = '<i class="fa-solid fa-circle-check me-2"></i>Confirm & Save';
-
+  btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-circle-check me-2"></i>Confirm & Save';
   document.getElementById('succOrderId').textContent = orderId;
   const status = document.getElementById('succSyncStatus');
-  if (synced){
-    status.className = 'alert alert-success small py-2';
-    status.innerHTML = '<i class="fa-solid fa-check-circle me-1"></i> Synced to server';
-  } else {
-    status.className = 'alert alert-warning small py-2';
-    status.innerHTML = '<i class="fa-solid fa-clock me-1"></i> Saved offline — will sync later';
-  }
-
-  orderCart = {};
-  updateSummary();
+  if (synced){ status.className = 'alert alert-success small py-2'; status.innerHTML = '<i class="fa-solid fa-check-circle me-1"></i> Synced to server'; }
+  else { status.className = 'alert alert-warning small py-2'; status.innerHTML = '<i class="fa-solid fa-clock me-1"></i> Saved offline'; }
+  orderCart = {}; updateSummary();
   bootstrap.Modal.getInstance(document.getElementById('reviewModal'))?.hide();
   new bootstrap.Modal(document.getElementById('successModal')).show();
 }
 
-// ==========================================
-// EDIT ORDER HISTORY (SMART SCHEME & NET RATE)
-// ==========================================
 window.openEdit = async function(orderId){
   const body = document.getElementById('editBody');
   body.innerHTML = '<div class="text-center py-4"><span class="loader"></span></div>';
@@ -917,7 +865,6 @@ window.openEdit = async function(orderId){
     if (!res.success){ body.innerHTML = '<div class="alert alert-danger">Failed</div>'; return; }
     editMeta = res.data;
     res.data.items.forEach(it => { 
-      // Look up scheme limit from local cache
       const pInfo = allProducts.find(p => p.sku === it.sku);
       it.scheme_limit = pInfo ? parseFloat(pInfo.scheme_limit || 0) : 0;
       editCart[it.sku] = { ...it }; 
@@ -925,88 +872,49 @@ window.openEdit = async function(orderId){
     renderEditBody();
   } catch(e){ body.innerHTML = '<div class="alert alert-danger">Offline</div>'; }
 };
-
 function renderEditBody(){
   const body = document.getElementById('editBody');
   const items = Object.values(editCart);
   if (!items.length){ body.innerHTML = '<div class="empty-state"><p>No items</p></div>'; updateEditTotal(); return; }
-  
   body.innerHTML = items.map(it => {
     const totalPcs = (it.cs * it.upc) + it.pc;
     const gross = totalPcs * it.rate;
     const net = Math.max(0, gross - it.scheme);
     const netRateCs = totalPcs > 0 ? (net / (totalPcs / it.upc)) : 0;
     const maxLimit = it.scheme_limit * totalPcs;
-    
     return `
       <div class="edit-item mb-3" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px;">
         <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-          <div>
-            <div style="font-weight:700; font-size:14px; color:#0f172a;">${esc(it.name)}</div>
-            <div style="font-size:11px; color:#64748b;">SKU: ${esc(it.sku)} · Rate: ${money(it.rate)}/PC</div>
-          </div>
+          <div><div style="font-weight:700; font-size:14px; color:#0f172a;">${esc(it.name)}</div><div style="font-size:11px; color:#64748b;">SKU: ${esc(it.sku)} · Rate: ${money(it.rate)}/PC</div></div>
           <button class="btn btn-sm btn-outline-danger py-0 px-2" onclick="removeEditItem('${esc(it.sku)}')"><i class="fa-solid fa-trash" style="font-size:11px"></i></button>
         </div>
-        
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
-          <div style="background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:6px;">
-            <label style="font-size:10px; font-weight:700; color:#64748b; text-transform:uppercase;">CS</label>
-            <input type="number" style="border:0; width:100%; font-weight:700; font-size:14px;" value="${it.cs}" onchange="updEdit('${esc(it.sku)}','cs',this.value)">
-          </div>
-          <div style="background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:6px;">
-            <label style="font-size:10px; font-weight:700; color:#64748b; text-transform:uppercase;">PC</label>
-            <input type="number" style="border:0; width:100%; font-weight:700; font-size:14px;" value="${it.pc}" onchange="updEdit('${esc(it.sku)}','pc',this.value)">
-          </div>
+          <div style="background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:6px;"><label style="font-size:10px; font-weight:700; color:#64748b; text-transform:uppercase;">CS</label><input type="number" style="border:0; width:100%; font-weight:700; font-size:14px;" value="${it.cs}" onchange="updEdit('${esc(it.sku)}','cs',this.value)"></div>
+          <div style="background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:6px;"><label style="font-size:10px; font-weight:700; color:#64748b; text-transform:uppercase;">PC</label><input type="number" style="border:0; width:100%; font-weight:700; font-size:14px;" value="${it.pc}" onchange="updEdit('${esc(it.sku)}','pc',this.value)"></div>
         </div>
-
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-          <div style="background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:6px;">
-            <label style="font-size:10px; font-weight:700; color:#64748b; text-transform:uppercase;">Net Rate / CS</label>
-            <input type="number" step="0.01" id="edit-net-${esc(it.sku)}" style="border:0; width:100%; font-weight:700; font-size:14px;" value="${netRateCs.toFixed(2)}" onchange="syncEditNetRate('${esc(it.sku)}', this.value)">
-          </div>
-          <div style="background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:6px;" id="edit-scheme-box-${esc(it.sku)}">
-            <label style="font-size:10px; font-weight:700; color:#64748b; text-transform:uppercase;">Scheme Disc</label>
-            <input type="number" step="0.01" id="edit-scheme-${esc(it.sku)}" style="border:0; width:100%; font-weight:700; font-size:14px;" value="${it.scheme}" onchange="syncEditScheme('${esc(it.sku)}', this.value)">
-          </div>
+          <div style="background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:6px;"><label style="font-size:10px; font-weight:700; color:#64748b; text-transform:uppercase;">Net Rate / CS</label><input type="number" step="0.01" id="edit-net-${esc(it.sku)}" style="border:0; width:100%; font-weight:700; font-size:14px;" value="${netRateCs.toFixed(2)}" onchange="syncEditNetRate('${esc(it.sku)}', this.value)"></div>
+          <div style="background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:6px;" id="edit-scheme-box-${esc(it.sku)}"><label style="font-size:10px; font-weight:700; color:#64748b; text-transform:uppercase;">Scheme Disc</label><input type="number" step="0.01" id="edit-scheme-${esc(it.sku)}" style="border:0; width:100%; font-weight:700; font-size:14px;" value="${it.scheme}" onchange="syncEditScheme('${esc(it.sku)}', this.value)"></div>
         </div>
         ${it.scheme_limit > 0 ? `<div class="mt-1 text-danger" id="edit-warn-${esc(it.sku)}" style="display:none; font-size:11px; font-weight:bold;">Max allowed: ${money(maxLimit)}</div>` : ''}
       </div>`;
   }).join('');
-  
   updateEditTotal();
 }
-
-window.updEdit = function(sku, field, val){
-  if (!editCart[sku]) return;
-  editCart[sku][field] = Math.max(0, parseInt(val) || 0);
-  renderEditBody(); // Re-render to recalculate Net Rate and Limits
-};
+window.updEdit = function(sku, field, val){ if (!editCart[sku]) return; editCart[sku][field] = Math.max(0, parseInt(val) || 0); renderEditBody(); };
 window.removeEditItem = function(sku){ if (!confirm('Remove?')) return; delete editCart[sku]; renderEditBody(); };
-
 window.syncEditNetRate = function(sku, val) {
-  const it = editCart[sku];
-  if (!it) return;
-  const totalPcs = (it.cs * it.upc) + it.pc;
-  const tpCs = it.rate * it.upc;
-  const netRateCs = parseFloat(val) || 0;
-  if (totalPcs > 0) {
-    const discPerCs = tpCs - netRateCs;
-    it.scheme = Math.max(0, (totalPcs / it.upc) * discPerCs);
-  }
+  const it = editCart[sku]; if (!it) return;
+  const totalPcs = (it.cs * it.upc) + it.pc; const tpCs = it.rate * it.upc; const netRateCs = parseFloat(val) || 0;
+  if (totalPcs > 0) { it.scheme = Math.max(0, (totalPcs / it.upc) * (tpCs - netRateCs)); }
   renderEditBody();
 };
-
 window.syncEditScheme = function(sku, val) {
-  const it = editCart[sku];
-  if (!it) return;
+  const it = editCart[sku]; if (!it) return;
   it.scheme = parseFloat(val) || 0;
-  
-  // Validation
   const totalPcs = (it.cs * it.upc) + it.pc;
   const maxAllowed = totalPcs * (it.scheme_limit || 0);
-  const warn = document.getElementById(`edit-warn-${sku}`);
-  const schemeInput = document.getElementById(`edit-scheme-${sku}`);
-  
+  const warn = document.getElementById(`edit-warn-${sku}`); const schemeInput = document.getElementById(`edit-scheme-${sku}`);
   if (maxAllowed > 0 && it.scheme > maxAllowed + 0.01 && currentChannel !== 'Wholesale') {
     if (schemeInput) schemeInput.classList.add('is-invalid');
     if (warn) { warn.style.display = 'block'; warn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Limit exceeded! Max allowed: ${money(maxAllowed)}`; }
@@ -1014,57 +922,38 @@ window.syncEditScheme = function(sku, val) {
     if (schemeInput) schemeInput.classList.remove('is-invalid');
     if (warn) warn.style.display = 'none';
   }
-  
-  renderEditBody(); // Re-render to update Net Rate
+  renderEditBody();
 };
-
 function updateEditTotal(){
-  let total = 0;
-  Object.values(editCart).forEach(it => { total += Math.max(0, ((it.cs * it.upc) + it.pc) * it.rate - it.scheme); });
+  let total = 0; Object.values(editCart).forEach(it => { total += Math.max(0, ((it.cs * it.upc) + it.pc) * it.rate - it.scheme); });
   document.getElementById('editTotal').textContent = money(total);
 }
-
 async function updateOrder(){
   if (!editMeta) return;
   const items = Object.values(editCart).filter(i => i.cs > 0 || i.pc > 0);
   if (!items.length){ if (!confirm('No items. Delete order?')) return; return deleteOrder(); }
-  
-  // Final Limit check
   for (let it of items) {
-    const totalPcs = (it.cs * it.upc) + it.pc;
-    const maxAllowed = totalPcs * (it.scheme_limit || 0);
-    if (maxAllowed > 0 && it.scheme > maxAllowed + 0.01 && currentChannel !== 'Wholesale') {
-      toast(`Scheme limit exceeded for ${it.name}`, 'error'); return;
-    }
+    const totalPcs = (it.cs * it.upc) + it.pc; const maxAllowed = totalPcs * (it.scheme_limit || 0);
+    if (maxAllowed > 0 && it.scheme > maxAllowed + 0.01 && currentChannel !== 'Wholesale') { toast(`Scheme limit exceeded for ${it.name}`, 'error'); return; }
   }
-
-  const btn = document.getElementById('btnUpdateOrder');
-  btn.disabled = true; btn.innerHTML = '<span class="loader"></span>';
+  const btn = document.getElementById('btnUpdateOrder'); btn.disabled = true; btn.innerHTML = '<span class="loader"></span>';
   try {
     const res = await apiPost('update_order', { order_id: editMeta.order_id, items: items.map(i => ({ sku: i.sku, name: i.name, cs: i.cs, pc: i.pc, upc: i.upc, rate: i.rate, scheme: i.scheme })) });
-    if (res && res.success){
-      bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
-      toast('Order updated ✓', 'success'); loadHistory();
-    } else toast(res.data?.message || 'Failed', 'error');
+    if (res && res.success){ bootstrap.Modal.getInstance(document.getElementById('editModal')).hide(); toast('Order updated ✓', 'success'); loadHistory(); } 
+    else toast(res.data?.message || 'Failed', 'error');
   } catch(e){ toast('Network error', 'error'); }
   btn.disabled = false; btn.innerHTML = 'Update Order';
 }
-
 async function deleteOrder(){
   if (!editMeta) return;
   if (!confirm('Delete order permanently?')) return;
   try {
     const res = await apiPost('delete_order', { order_id: editMeta.order_id });
-    if (res && res.success){
-      bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
-      toast('Deleted', 'success'); loadHistory();
-    } else toast('Delete failed', 'error');
+    if (res && res.success){ bootstrap.Modal.getInstance(document.getElementById('editModal')).hide(); toast('Deleted', 'success'); loadHistory(); } 
+    else toast('Delete failed', 'error');
   } catch(e){ toast('Network error', 'error'); }
 }
 
-// ==========================================
-// CUSTOMER ADD LOGIC (FIXED FOR FORMDATA ISSUE)
-// ==========================================
 async function saveCustomer(){
   const code = document.getElementById('nc_code').value.trim();
   const name = document.getElementById('nc_name').value.trim();
@@ -1073,107 +962,60 @@ async function saveCustomer(){
   const routeName = routeSel.options[routeSel.selectedIndex]?.dataset.name || '';
   const phone = document.getElementById('nc_phone').value.trim();
   const channel = document.getElementById('nc_channel').value;
-  
   if (!code || !name || !routeCode){ toast('Code, Name & Route zaroori', 'error'); return; }
-
-  const btn = document.getElementById('btnSaveCustomer');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="loader"></span>';
   
+  const btn = document.getElementById('btnSaveCustomer'); btn.disabled = true; btn.innerHTML = '<span class="loader"></span>';
   try {
     const params = new URLSearchParams();
     params.append('action', 'hta_save_customer_ajax');
-    params.append('code', code);
-    params.append('name', name);
-    params.append('route_name', routeName);
-    params.append('route_code', routeCode);
-    params.append('phone', phone);
-    params.append('channel', channel);
-
-    const res = await fetch(`${API.replace(/\/$/,'')}/wp-admin/admin-ajax.php`, { 
-      method:'POST', 
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: params.toString()
-    }).then(r => r.json());
-    
-    if (res && res.success){
-      toast('Customer saved ✓', 'success');
-      bootstrap.Modal.getInstance(document.getElementById('addCustModal')).hide();
-      await refreshFromServer();
-    } else {
-      toast(res.data?.message || 'Failed', 'error');
-    }
-  } catch(e){ 
-    toast('Network error', 'error'); 
-  }
-  
-  btn.disabled = false;
-  btn.textContent = 'Save Customer';
+    params.append('code', code); params.append('name', name);
+    params.append('route_name', routeName); params.append('route_code', routeCode);
+    params.append('phone', phone); params.append('channel', channel);
+    const res = await fetch(`${API.replace(/\/$/,'')}/wp-admin/admin-ajax.php`, { method:'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: params.toString() }).then(r => r.json());
+    if (res && res.success){ toast('Customer saved ✓', 'success'); bootstrap.Modal.getInstance(document.getElementById('addCustModal')).hide(); await refreshFromServer(); } 
+    else { toast(res.data?.message || 'Failed', 'error'); }
+  } catch(e){ toast('Network error', 'error'); }
+  btn.disabled = false; btn.textContent = 'Save Customer';
 }
 
-// ==========================================
-// AUTO SYNC, HISTORY, SETTINGS
-// ==========================================
 async function autoSync(manual=false){
   if (isSyncing) return;
   if (!navigator.onLine){ if(manual) toast('No internet', 'error'); return; }
   let pending = LS.get('hta_pending_orders', []);
   if (!pending.length){ if(manual) toast('Nothing to sync', '', 1500); return; }
-  isSyncing = true;
-  if (manual) toast('Syncing...', '', 1500);
+  isSyncing = true; if (manual) toast('Syncing...', '', 1500);
   let succeeded = [];
   for (const p of pending){
-    try {
-      const res = await apiPost('save_order', p);
-      if (res && res.success) succeeded.push(p.order_id);
-    } catch(e){}
+    try { const res = await apiPost('save_order', p); if (res && res.success) succeeded.push(p.order_id); } catch(e){}
   }
   const remaining = LS.get('hta_pending_orders', []).filter(o => !succeeded.includes(o.order_id));
-  LS.set('hta_pending_orders', remaining);
-  updatePendingUI(); renderPending(); isSyncing = false;
-  if (succeeded.length > 0) toast(`${succeeded.length} order synced ✓`, 'success');
-  else if (manual) toast('Sync failed', 'error');
+  LS.set('hta_pending_orders', remaining); updatePendingUI(); renderPending(); isSyncing = false;
+  if (succeeded.length > 0) toast(`${succeeded.length} order synced ✓`, 'success'); else if (manual) toast('Sync failed', 'error');
 }
-
 function renderPending(){
   const list = LS.get('hta_pending_orders', []);
   const el = document.getElementById('pendingList');
-  if (!list.length){
-    el.innerHTML = '<div class="empty-state"><i class="fa-solid fa-circle-check"></i><p>No pending orders ✓</p></div>';
-    return;
-  }
+  if (!list.length){ el.innerHTML = '<div class="empty-state"><i class="fa-solid fa-circle-check"></i><p>No pending orders ✓</p></div>'; return; }
   el.innerHTML = list.map(o => `
     <div class="order-row">
-      <div class="meta">
-        <div class="cname">${esc(o.customer)}</div>
-        <div class="oinfo">${esc(o.route)} · ${o.items.length} items</div>
-      </div>
-      <div style="text-align:right">
-        <div class="odate">${new Date(o.created_at).toLocaleDateString()}</div>
-        <button class="btn btn-sm btn-outline-danger mt-1 py-0 px-2" onclick="removePending('${esc(o.order_id)}')"><i class="fa-solid fa-xmark"></i></button>
-      </div>
+      <div class="meta"><div class="cname">${esc(o.customer)}</div><div class="oinfo">${esc(o.route)} · ${o.items.length} items</div></div>
+      <div style="text-align:right"><div class="odate">${new Date(o.created_at).toLocaleDateString()}</div><button class="btn btn-sm btn-outline-danger mt-1 py-0 px-2" onclick="removePending('${esc(o.order_id)}')"><i class="fa-solid fa-xmark"></i></button></div>
     </div>`).join('');
 }
-
 window.removePending = function(orderId){
   if (!confirm('Discard?')) return;
   LS.set('hta_pending_orders', LS.get('hta_pending_orders', []).filter(o => o.order_id !== orderId));
   updatePendingUI(); renderPending(); toast('Removed');
-};
-
+}
 async function loadHistory(){
-  const el = document.getElementById('historyList');
-  el.innerHTML = '<div class="text-center py-4"><span class="loader"></span> Loading...</div>';
+  const el = document.getElementById('historyList'); el.innerHTML = '<div class="text-center py-4"><span class="loader"></span> Loading...</div>';
   try {
     const res = await apiGet('get_orders', { from: document.getElementById('hFrom').value, to: document.getElementById('hTo').value, limit: 200 });
-    if (!res.success || !res.data.length){
-      el.innerHTML = '<div class="empty-state"><i class="fa-solid fa-inbox"></i><p>No orders</p></div>'; return;
-    }
+    if (!res.success || !res.data.length){ el.innerHTML = '<div class="empty-state"><i class="fa-solid fa-inbox"></i><p>No orders</p></div>'; return; }
     LS.set('hta_history_cache', res.data); renderHistory(res.data);
   } catch(e){
     const cached = LS.get('hta_history_cache', []);
-    if (cached.length) renderHistory(cached, true);
-    else el.innerHTML = '<div class="empty-state"><i class="fa-solid fa-wifi"></i><p>Offline</p></div>';
+    if (cached.length) renderHistory(cached, true); else el.innerHTML = '<div class="empty-state"><i class="fa-solid fa-wifi"></i><p>Offline</p></div>';
   }
 }
 function renderHistory(rows, offline=false){
@@ -1181,14 +1023,8 @@ function renderHistory(rows, offline=false){
   let html = offline ? '<div class="alert alert-warning small py-1 mb-2"><i class="fa-solid fa-triangle-exclamation"></i> Cached data</div>' : '';
   html += rows.map(o => `
     <div class="order-row" onclick="openEdit('${esc(o.order_id)}')">
-      <div class="meta">
-        <div class="cname">${esc(o.customer_name)}</div>
-        <div class="oinfo">${esc(o.route_name)} · ${o.item_count} items</div>
-      </div>
-      <div style="text-align:right">
-        <div class="oamount">${money(o.total_net)}</div>
-        <div class="odate">${(o.order_date||'').slice(0,10)}</div>
-      </div>
+      <div class="meta"><div class="cname">${esc(o.customer_name)}</div><div class="oinfo">${esc(o.route_name)} · ${o.item_count} items</div></div>
+      <div style="text-align:right"><div class="oamount">${money(o.total_net)}</div><div class="odate">${(o.order_date||'').slice(0,10)}</div></div>
     </div>`).join('');
   el.innerHTML = html;
 }
@@ -1204,28 +1040,18 @@ async function saveSettings(){
     if (test && test.success){
       LS.set('hta_api_url', url); LS.set('hta_api_key', key);
       API = url; KEY = key;
-      status.innerHTML = '<span class="text-success">Connected! Loading...</span>';
-      await refreshFromServer(); updateCacheCounters();
-      setTimeout(() => { status.innerHTML = '<span class="text-success">Ready</span>'; toast('Connected ✓', 'success'); }, 400);
+      status.innerHTML = '<span class="text-success">Connected! Reloading...</span>';
+      setTimeout(() => location.reload(), 800);
     } else {
       status.innerHTML = '<span class="text-danger">Invalid key</span>'; toast('Invalid key', 'error');
     }
   } catch(e){ status.innerHTML = '<span class="text-danger">Cannot reach server</span>'; toast('Connection failed', 'error'); }
 }
 
-function clearCache(){
-  if (!confirm('Clear all cached data?')) return;
-  LS.del('hta_routes'); LS.del('hta_customers'); LS.del('hta_products'); LS.del('hta_history_cache');
-  allRoutes = []; allCustomers = []; allProducts = [];
-  populateRoutes(); populateAddCustRouteDropdown(); updateCacheCounters(); populateFilterDropdowns();
-  toast('Cache cleared', 'success'); setTimeout(() => location.reload(), 600);
-}
-
 function buildCSVBlob(payload){
   let rows = [['Order ID','Route','Customer Code','Customer','SKU','Name','CS','PC','Rate','Scheme','Net']];
   payload.items.forEach(it => {
-    const pcs = (it.cs * it.upc) + it.pc;
-    const net = Math.max(0, (pcs * it.rate) - it.scheme);
+    const pcs = (it.cs * it.upc) + it.pc; const net = Math.max(0, (pcs * it.rate) - it.scheme);
     rows.push([payload.order_id, payload.route, payload.customer_code, payload.customer, it.sku, it.name, it.cs, it.pc, it.rate, it.scheme, net.toFixed(2)]);
   });
   const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
@@ -1233,20 +1059,15 @@ function buildCSVBlob(payload){
 }
 window.triggerCSVShare = function(){
   if (!lastSavedPayload) return;
-  const { blob, filename } = buildCSVBlob(lastSavedPayload);
-  const file = new File([blob], filename, { type: 'text/csv' });
-  if (navigator.canShare && navigator.canShare({ files: [file] })) navigator.share({ files: [file], title: 'Order', text: 'HTA DMS Order' }).catch(() => {});
-  else window.triggerCSVDownload();
+  const { blob, filename } = buildCSVBlob(lastSavedPayload); const file = new File([blob], filename, { type: 'text/csv' });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) navigator.share({ files: [file], title: 'Order', text: 'HTA DMS Order' }).catch(() => {}); else window.triggerCSVDownload();
 };
 window.triggerCSVDownload = function(){
   if (!lastSavedPayload) return;
   const { blob, filename } = buildCSVBlob(lastSavedPayload);
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = filename;
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 5000);
+  const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(() => URL.revokeObjectURL(url), 5000);
 };
-
 </script>
 </body>
 </html>
